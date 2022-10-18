@@ -3,7 +3,7 @@ chains:
   - binary_name: wasmd
     chain_id: nois-testnet-003
     denom: unois
-    faucet: "http://faucet.noislabs.com/credit"
+    faucet: "http://faucet.noislabs.com"
     gas_price: 0.05
     ibc_connection:
       dest: ~
@@ -11,7 +11,7 @@ chains:
     name: nois-testnet-003
     prefix: nois
     rpc:
-      - "http://node-0.noislabs.com:26657"
+      - "https://rpc.noislabs.com:443"
     wasm:
       contracts:
         - address: nois1j7m4f68lruceg5xq3gfkfdgdgz02vhvlq2p67vf9v3hwdydaat3sajzcy5
@@ -103,8 +103,8 @@ chains:
     faucet: ~
     gas_price: 0.04
     ibc_connection:
-      dest: ~
-      src: ~
+      dest: connection-1111
+      src: connection-1111
       counterpart:
         chain: nois-testnet-003
         contract_name: nois-oracle
@@ -141,8 +141,8 @@ chains:
     faucet: ~
     gas_price: 0.025
     ibc_connection:
-      dest: connection-0
-      src: connection-11
+      dest: connection-9
+      src: connection-15
       counterpart:
         chain: nois-testnet-003
         contract_name: nois-oracle
@@ -176,11 +176,11 @@ chains:
   - binary_name: junod
     chain_id: uni-5
     denom: ujunox
-    faucet: "https://faucet.uni.juno.deuslabs.fi/credit"
+    faucet: "https://faucet.uni.juno.deuslabs.fi"
     gas_price: 0.025
     ibc_connection:
-      dest: connection-2
-      src: connection-29
+      dest: connection-8
+      src: connection-31
       counterpart:
         chain: nois-testnet-003
         contract_name: nois-oracle

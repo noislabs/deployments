@@ -51,7 +51,7 @@ do
         then echo "$chain : Info: Faucet is not relevant here";
         else echo "$chain : Trying to add credit for chain '$CHAIN_ID' with faucet '$FAUCET_URL'";
           BECH_ADDR=$($BINARY_NAME keys show $KEYRING_KEY_NAME -a ) 
-          curl -XPOST -H 'Content-type: application/json' -d "{\"address\":\"$BECH_ADDR\",\"denom\":\"$DENOM\"}" $FAUCET_URL
+          curl -XPOST -H 'Content-type: application/json' -d "{\"address\":\"$BECH_ADDR\",\"denom\":\"$DENOM\"}" $FAUCET_URL/credit
           echo "$chain - $contract : querying new balance ..."
           $BINARY_NAME query bank balances $BECH_ADDR --node=$NODE_URL | yq -r '.balances' 
     fi
@@ -110,6 +110,7 @@ do
         NOIS_PROXY_CONTRACT_ADDRESS=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="nois-proxy").address' config.yaml)
         TEMPLATE_NOIS_FAUCET=$(yq -r '.chains[]| select(.name=="'"$COUNTER_PART_CHAIN"'").faucet' config.yaml)
         TEMPLATE_NOIS_RPC=$(yq -r '.chains[]| select(.name=="'"$COUNTER_PART_CHAIN"'").rpc[0]' config.yaml)
+        TEMPLATE_NOIS_GAS_PRICES=$(yq -r '.chains[]| select(.name=="'"$COUNTER_PART_CHAIN"'").gas_price' config.yaml)
         RELAYER_IBC_VERSION=$(yq -r '.ibc.version' config.yaml)
         RELAYER_DOCKER_IMAGE=$(yq -r '.ibc.relayer.docker_image' config.yaml)
 
@@ -127,7 +128,8 @@ do
         sed -i '' "s#TEMPLATE_NOIS_DRAND_CONTRACT_ADDRESS#${NOIS_DRAND_CONTRACT_ADDRESS}#" relayer/nois-relayer-config.yaml
         sed -i '' "s#TEMPLATE_NOIS_RPC#${TEMPLATE_NOIS_RPC}#" relayer/nois-relayer-config.yaml
         sed -i '' "s#TEMPLATE_NOIS_FAUCET#${TEMPLATE_NOIS_FAUCET}#" relayer/nois-relayer-config.yaml 
-        sed -i '' "s#TEMPLATE_GAS_PRICES#${GAS_PRICES}#" relayer/nois-relayer-config.yaml        
+        sed -i '' "s#TEMPLATE_GAS_PRICES#${GAS_PRICES}#" relayer/nois-relayer-config.yaml       
+        sed -i '' "s#TEMPLATE_NOIS_GAS_PRICES#${TEMPLATE_NOIS_GAS_PRICES}#" relayer/nois-relayer-config.yaml     
         
         echo "$chain : building relayer docker"
         cd relayer

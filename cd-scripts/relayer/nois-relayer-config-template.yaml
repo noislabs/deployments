@@ -4,7 +4,7 @@ chains:
   TEMPLATE_RELAYER_NOIS_NAME:
     chain_id: TEMPLATE_RELAYER_NOIS_CHAIN_ID
     prefix: nois
-    gas_price: 0.1unois
+    gas_price: TEMPLATE_NOIS_GAS_PRICESunois
     hd_path: m/44'/118'/0'/0/0
     ics20_port: 'wasm.TEMPLATE_NOIS_DRAND_CONTRACT_ADDRESS' 
     faucet: TEMPLATE_NOIS_FAUCET

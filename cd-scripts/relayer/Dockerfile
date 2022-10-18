@@ -11,4 +11,4 @@ RUN npm i -g @confio/relayer@0.6.1
 COPY nois-relayer-config.yaml /root/.ibc-setup/registry.yaml 
 RUN ibc-setup init --src $CHAIN_NAME --dest $NOIS_CHAIN_NAME
 
-CMD ["ibc-relayer", "start", "--src=uni", "--dest=nois", "--src-connection=connection-262", "--dest-connection=connection-1"]
+CMD ["ibc-relayer", "version"]
