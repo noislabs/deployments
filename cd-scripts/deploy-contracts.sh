@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 #PREREQS
 # 0 You need Install yq and fetch
@@ -17,6 +17,8 @@ discord_notify () {
         $1; 
 }
 
+TEMPLATE_MIN_ROUND=$(curl https://drand.cloudflare.com/public/latest | jq -r '.round')
+
 SCRIPT_DIR="cd-scripts"
 KEYRING_KEY_NAME="deployment-key"
 
@@ -27,6 +29,7 @@ if [ -f "env_secrets.sh" ]; then
 else
   echo "some secrets are missing. create env_secrets.sh file"
 fi
+
 chains_list=($(yq -r '.chains[].name' config.yaml))
 
 
@@ -42,7 +45,7 @@ do
     RELAYER_IBC_DEST_CONNECTION=($(yq -r '.chains[]| select(.name=="'"$chain"'").ibc_connection.dest' config.yaml))
     PREFIX=($(yq -r '.chains[]| select(.name=="'"$chain"'").prefix' config.yaml))
     NODE_URL=($(yq -r '.chains[]| select(.name=="'"$chain"'").rpc[0]' config.yaml))
-
+    DEPLOYMENT_KEY_BECH_ADDR=$($BINARY_NAME keys show $KEYRING_KEY_NAME -a ) 
 
     echo "$chain : add key if it does not exist"
     $BINARY_NAME keys show $KEYRING_KEY_NAME >/dev/null || echo $MNEMONIC | $BINARY_NAME keys  add  $KEYRING_KEY_NAME --recover 
@@ -50,29 +53,27 @@ do
     if [ "$FAUCET_URL" == "~" ] ;
         then echo "$chain : Info: Faucet is not relevant here";
         else echo "$chain : Trying to add credit for chain '$CHAIN_ID' with faucet '$FAUCET_URL'";
-          BECH_ADDR=$($BINARY_NAME keys show $KEYRING_KEY_NAME -a ) 
-          curl -XPOST -H 'Content-type: application/json' -d "{\"address\":\"$BECH_ADDR\",\"denom\":\"$DENOM\"}" $FAUCET_URL/credit
+          curl -XPOST -H 'Content-type: application/json' -d "{\"address\":\"$DEPLOYMENT_KEY_BECH_ADDR\",\"denom\":\"$DENOM\"}" $FAUCET_URL/credit
           echo "$chain - $contract : querying new balance ..."
-          $BINARY_NAME query bank balances $BECH_ADDR --node=$NODE_URL | yq -r '.balances' 
+          $BINARY_NAME query bank balances $DEPLOYMENT_KEY_BECH_ADDR --node=$NODE_URL | yq -r '.balances' 
     fi
 
     for contract in "${contracts_list[@]}"
     do
-        
     
         GIT_CONTRACTS_URL=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").url' config.yaml)
         GIT_CONTRACTS_TAG=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").version' config.yaml)
         GIT_CONTRACTS_ASSET=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").git_asset_name' config.yaml)
         CONTRACTS_ADDRESS=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").address' config.yaml)
-        CONTRACT_INSTATIATION_MSG=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").instantiation_msg' config.yaml)
-        
-        if [ "$CONTRACT_INSTATIATION_MSG" == "defined-in-deployment-script-nois-demo" ] || [ "$CONTRACT_INSTATIATION_MSG" == "double_dice_roll_instantiate_msg" ] ;
-        then 
-        PROXY_ADDRESS=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="nois-proxy").address' config.yaml)
-        CONTRACT_INSTATIATION_MSG='{"nois_proxy":"'"$PROXY_ADDRESS"'"}'
-        fi
-        
+        CONTRACT_INSTATIATION_MSG=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").instantiation_msg' config.yaml)  
+        NOIS_PROXY_CONTRACT_ADDRESS=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="nois-proxy").address' config.yaml)
 
+        CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_NOIS_PROXY#$NOIS_PROXY_CONTRACT_ADDRESS#" )
+        CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_MIN_ROUND#$TEMPLATE_MIN_ROUND#" )
+        CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_DENOM#$DENOM#" )
+        TEMPLATE_WITHDRAWAL_ADDRESS=$DEPLOYMENT_KEY_BECH_ADDR
+        CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_WITHDRAWAL_ADDRESS#$TEMPLATE_WITHDRAWAL_ADDRESS#" )
+        
 
         if [ "$CONTRACTS_ADDRESS" == "~" ] ||  [ "$CONTRACTS_ADDRESS" == "null" ] || [ ${#CONTRACTS_ADDRESS} -le 10 ] ;
         then 
@@ -83,7 +84,7 @@ do
           echo "$chain - $contract : deployment of $contract in $chain"
 
           echo "$chain - $contract : storing contract"
-          CODE_ID=$($BINARY_NAME tx wasm store ../artifacts/$GIT_CONTRACTS_ASSET.wasm --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y |yq -r ".logs[0].events[1].attributes[0].value")
+          CODE_ID=$($BINARY_NAME tx wasm store ../artifacts/$GIT_CONTRACTS_ASSET.wasm --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y |yq -r ".logs[0].events[1].attributes[1].value") #for wasmd 0.29.0-rc2 and maybe above, change attributes[0] --> attributes[1]
           yq -i '(.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").code_id) = "'"$CODE_ID"'"' config.yaml
           
           echo "$chain - $contract : Instantiating contract"
@@ -107,7 +108,6 @@ do
         COUNTER_PART_CONTRACT_NAME=$(yq -r '.chains[]| select(.name=="'"$chain"'").ibc_connection.counterpart.contract_name' config.yaml)
         NOIS_DRAND_CONTRACT_ADDRESS=$(yq -r '.chains[]| select(.name=="'"$COUNTER_PART_CHAIN"'").wasm.contracts[]| select(.name=="'"$COUNTER_PART_CONTRACT_NAME"'").address' config.yaml)
         echo $NOIS_DRAND_CONTRACT_ADDRESS
-        NOIS_PROXY_CONTRACT_ADDRESS=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="nois-proxy").address' config.yaml)
         TEMPLATE_NOIS_FAUCET=$(yq -r '.chains[]| select(.name=="'"$COUNTER_PART_CHAIN"'").faucet' config.yaml)
         TEMPLATE_NOIS_RPC=$(yq -r '.chains[]| select(.name=="'"$COUNTER_PART_CHAIN"'").rpc[0]' config.yaml)
         TEMPLATE_NOIS_GAS_PRICES=$(yq -r '.chains[]| select(.name=="'"$COUNTER_PART_CHAIN"'").gas_price' config.yaml)
