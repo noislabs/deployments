@@ -11,8 +11,8 @@ cd $SCRIPT_DIR
 chain=$CHAIN
 contract=double-dice-roll
 
+NOIS_PROXY_CONTRACT_ADDRESS=$(cat config.yaml|yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="nois-proxy").address' )
 NOIS_DEMO_CONTRACT_ADDRESS=$(cat config.yaml|yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").address' )
-echo "1"
 yq -r '.chains[]| select(.name=="'"$chain"'").binary_name' config.yaml
 BINARY_NAME=($(yq -r '.chains[]| select(.name=="'"$chain"'").binary_name' config.yaml))
 echo $BINARY_NAME
@@ -29,6 +29,10 @@ if [ "$FAUCET_URL" == "~" ] ;
           echo "$chain - $contract : querying new balance ..."
           $BINARY_NAME query bank balances $BECH_ADDR --node=$NODE_URL | yq -r '.balances'
     fi
+price=$($BINARY_NAME query wasm  contract-state  smart $NOIS_PROXY_CONTRACT_ADDRESS  '{"prices":{}}'  --chain-id $CHAIN_ID   --node=$NODE_URL |yq -r '.data.prices[0].amount')
+echo "price: $price"
+
+
 
 declare -i TTL
 TTL='2000'
@@ -38,10 +42,7 @@ do
    timestamp=$(date +%s)
    job_id=$DAPP-$timestamp
    result="null"
-   RANDOM_SLEEP=$(($RANDOM%30))
-   echo "sleeping for $RANDOM_SLEEP seconds"
-   sleep $RANDOM_SLEEP
-   echo passphrase | $BINARY_NAME tx wasm execute $NOIS_DEMO_CONTRACT_ADDRESS  '{"roll_dice": {"job_id": "'"$job_id"'"}}'  --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.4  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y >/dev/null
+   echo passphrase | $BINARY_NAME tx wasm execute $NOIS_DEMO_CONTRACT_ADDRESS  '{"roll_dice": {"job_id": "'"$job_id"'"}}' --amount $price$DENOM  --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.4  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y >/dev/null
    SECONDS=0
    i=0
    while [ "$result" == "null" ] && [ "$i" -lt "$TTL" ]
@@ -61,5 +62,9 @@ do
         echo "result: $result"
    fi
    echo $SECONDS >  /tmp/$CHAIN-$DAPP-$NOIS_CHAIN
+   
+   RANDOM_SLEEP=$(($RANDOM%30))
+   echo "sleeping for $RANDOM_SLEEP seconds"
+   sleep $RANDOM_SLEEP
 
 done
