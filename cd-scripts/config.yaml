@@ -1,6 +1,6 @@
 ---
 chains:
-  - binary_name: wasmd
+  - binary_name: noisd
     chain_id: nois-testnet-003
     denom: unois
     faucet: "http://faucet.noislabs.com"
@@ -206,6 +206,37 @@ chains:
           version: v0.7.2
         - address: "juno1e7p6k4c0l52zperyhd6nfx053yrdgjw4k6kunszhk9j0smedgtzs27nrkh"
           code_id: "1306"
+          git_asset_name: double_dice_roll
+          instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
+          name: double-dice-roll
+          url: "https://github.com/noislabs/nois-dapp-examples"
+          version: v0.4.3
+  - binary_name: junod
+    chain_id: juno-1
+    denom: ujuno
+    faucet: ~
+    gas_price: 0.0025
+    ibc_connection:
+      dest: connection-16
+      src: connection-255
+      counterpart:
+        chain: nois-testnet-003
+        contract_name: nois-oracle
+    name: juno-1
+    prefix: juno
+    rpc:
+      - "https://rpc-juno.mib.tech:443"
+    wasm:
+      contracts:
+        - address: "juno13qw7myq026jesj5jutzzxmlfemc7468n8dp7vty7zlw8w08cyxuqfsvxh3"
+          code_id: "1304"
+          git_asset_name: nois_proxy
+          instantiation_msg: '{"prices":[{"denom":"TEMPLATE_DENOM","amount":"500000"}],"withdrawal_address":"TEMPLATE_WITHDRAWAL_ADDRESS","test_mode":false}'
+          name: nois-proxy
+          url: "https://github.com/noislabs/nois-contracts"
+          version: v0.7.2
+        - address: "juno1jzsm394v2gjah559ks0j3scj5lmk7dg29aj9e08gvtzlyhxwzrascpmlw7"
+          code_id: "1456"
           git_asset_name: double_dice_roll
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: double-dice-roll
