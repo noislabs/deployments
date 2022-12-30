@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+set -e
 
 #PREREQS
 # 0 You need Install yq and fetch
@@ -106,8 +106,8 @@ do
     then
         COUNTER_PART_CHAIN=$(yq -r '.chains[]| select(.name=="'"$chain"'").ibc_connection.counterpart.chain' config.yaml)
         COUNTER_PART_CONTRACT_NAME=$(yq -r '.chains[]| select(.name=="'"$chain"'").ibc_connection.counterpart.contract_name' config.yaml)
-        NOIS_DRAND_CONTRACT_ADDRESS=$(yq -r '.chains[]| select(.name=="'"$COUNTER_PART_CHAIN"'").wasm.contracts[]| select(.name=="'"$COUNTER_PART_CONTRACT_NAME"'").address' config.yaml)
-        echo $NOIS_DRAND_CONTRACT_ADDRESS
+        NOIS_GATEWAY_CONTRACT_ADDRESS=$(yq -r '.chains[]| select(.name=="'"$COUNTER_PART_CHAIN"'").wasm.contracts[]| select(.name=="'"$COUNTER_PART_CONTRACT_NAME"'").address' config.yaml)
+        echo $NOIS_GATEWAY_CONTRACT_ADDRESS
         TEMPLATE_NOIS_FAUCET=$(yq -r '.chains[]| select(.name=="'"$COUNTER_PART_CHAIN"'").faucet' config.yaml)
         TEMPLATE_NOIS_RPC=$(yq -r '.chains[]| select(.name=="'"$COUNTER_PART_CHAIN"'").rpc[0]' config.yaml)
         TEMPLATE_NOIS_GAS_PRICES=$(yq -r '.chains[]| select(.name=="'"$COUNTER_PART_CHAIN"'").gas_price' config.yaml)
@@ -125,7 +125,7 @@ do
         sed -i '' "s#TEMPLATE_NOIS_PROXY_CONTRACT_ADDRESS#${NOIS_PROXY_CONTRACT_ADDRESS}#" relayer/nois-relayer-config.yaml
         sed -i '' "s#TEMPLATE_CHAIN_FAUCET_URL#${FAUCET_URL}#" relayer/nois-relayer-config.yaml
         sed -i '' "s#TEMPLATE_CHAIN_NODE_URL#${NODE_URL}#" relayer/nois-relayer-config.yaml
-        sed -i '' "s#TEMPLATE_NOIS_DRAND_CONTRACT_ADDRESS#${NOIS_DRAND_CONTRACT_ADDRESS}#" relayer/nois-relayer-config.yaml
+        sed -i '' "s#TEMPLATE_NOIS_GATEWAY_CONTRACT_ADDRESS#${NOIS_GATEWAY_CONTRACT_ADDRESS}#" relayer/nois-relayer-config.yaml
         sed -i '' "s#TEMPLATE_NOIS_RPC#${TEMPLATE_NOIS_RPC}#" relayer/nois-relayer-config.yaml
         sed -i '' "s#TEMPLATE_NOIS_FAUCET#${TEMPLATE_NOIS_FAUCET}#" relayer/nois-relayer-config.yaml 
         sed -i '' "s#TEMPLATE_GAS_PRICES#${GAS_PRICES}#" relayer/nois-relayer-config.yaml       
@@ -151,13 +151,13 @@ do
         echo "$chain : check if channel exists"
         channel_exists=true
         $BINARY_NAME query ibc channel channels  --node=$NODE_URL   --limit=100000 |yq -r '.channels[]|select(.version=="'"$RELAYER_IBC_VERSION"'")| select(.port_id=="'"wasm.$NOIS_PROXY_CONTRACT_ADDRESS"'").channel_id |length' -e || channel_exists=false
-        if [ "$channel_exists" = true ];
-        then
-            echo "$chain : channel already exists. skipping channel creation"
-        else
+        #if [ "$channel_exists" = true ];
+        #then
+        #    echo "$chain : channel already exists. skipping channel creation"
+        #else
             echo "$chain : creating IBC channel"
-            docker run  -e RELAYER_MNEMONIC="$RELAYER_MNEMONIC" $RELAYER_DOCKER_IMAGE:$CHAIN_ID-$NOIS_PROXY_CONTRACT_ADDRESS ibc-setup channel --src-connection=$RELAYER_IBC_SRC_CONNECTION --dest-connection=$RELAYER_IBC_DEST_CONNECTION --src-port=wasm.$NOIS_PROXY_CONTRACT_ADDRESS --dest-port=wasm.$NOIS_DRAND_CONTRACT_ADDRESS --version=$RELAYER_IBC_VERSION
-        fi
+            docker run  -e RELAYER_MNEMONIC="$RELAYER_MNEMONIC" $RELAYER_DOCKER_IMAGE:$CHAIN_ID-$NOIS_PROXY_CONTRACT_ADDRESS ibc-setup channel --src-connection=$RELAYER_IBC_SRC_CONNECTION --dest-connection=$RELAYER_IBC_DEST_CONNECTION --src-port=wasm.$NOIS_PROXY_CONTRACT_ADDRESS --dest-port=wasm.$NOIS_GATEWAY_CONTRACT_ADDRESS --version=$RELAYER_IBC_VERSION
+        #fi
 
         
         
