@@ -66,13 +66,13 @@ chains:
           name: nois-demo
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.8.0
-        - address: aura1vpp6hzfxqmz05mzjrnvhqt2gx0khwr9r3ucl7kgny6p508m97wzqpd06uh
-          code_id: "400"
+        - address: aura1akudxf7hw48u9282qd4pdxujdw34v6l7adpqkmvgtfwv66qfqwzq9jentz
+          code_id: "401"
           git_asset_name: double_dice_roll
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: double-dice-roll
           url: "https://github.com/noislabs/nois-dapp-examples"
-          version: v0.4.3
+          version: v0.5.0
   - binary_name: starsd
     chain_id: elgafar-1
     denom: ustars
@@ -104,13 +104,13 @@ chains:
           name: nois-demo
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.8.0
-        - address: stars1c695lakqekwv2yn4c49axt2mgcv28zg5wgxcc75gar7q3qsxdvkqz2025r
-          code_id: "749"
+        - address: stars1kh7kv32yyyr36nxw2xs9nzvz5q4x2vgjllkq2ufd69e5343rrl8qqvuh8h
+          code_id: "750"
           git_asset_name: double_dice_roll
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: double-dice-roll
           url: "https://github.com/noislabs/nois-dapp-examples"
-          version: v0.4.3
+          version: v0.5.0
   - binary_name: junod
     chain_id: uni-5
     denom: ujunox
@@ -142,13 +142,13 @@ chains:
           name: nois-demo
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.8.0
-        - address: juno18f2y58rwuujt7vwcaq7m72r0f3qc9u4sstqzacned9en55v68v0sqkcmx8
-          code_id: "3824"
+        - address: juno1ae39n54d57fs896pflpcw3kyu0za89ffzjfd0lv86u7u66hupp7slpuc69
+          code_id: "3827"
           git_asset_name: double_dice_roll
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: double-dice-roll
           url: "https://github.com/noislabs/nois-dapp-examples"
-          version: v0.4.3
+          version: v0.5.0
   - binary_name: juno1d
     chain_id: juno-1
     denom: ujuno
@@ -179,7 +179,7 @@ chains:
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: double-dice-roll
           url: "https://github.com/noislabs/nois-dapp-examples"
-          version: v0.4.3
+          version: v0.5.0
 ibc:
   relayer:
     docker_image: noislabs/nois-relayer
