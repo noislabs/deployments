@@ -35,151 +35,151 @@ chains:
           name: nois-icecube
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.8.0
-  - binary_name: aurad
-    chain_id: euphoria-2
-    denom: ueaura
-    faucet: ~
-    gas_price: 0.04
-    ibc_connection:
-      dest: connection-31
-      src: connection-19
-      counterpart:
-        chain: nois-testnet-003
-        contract_name: nois-gateway
-    name: euphoria-2
-    prefix: aura
-    rpc:
-      - "https://rpc.euphoria.aura.network:443"
-    wasm:
-      contracts:
-        - address: aura19z2hv8l87qwg8nnq6v76efjm2rm78rkdghq4rkxfgqrzv3usw8lq26rmwt
-          code_id: "398"
-          git_asset_name: nois_proxy
-          instantiation_msg: '{"prices":[{"denom":"TEMPLATE_DENOM","amount":"100"}],"withdrawal_address":"TEMPLATE_WITHDRAWAL_ADDRESS","test_mode":false}'
-          name: nois-proxy
-          url: "https://github.com/noislabs/nois-contracts"
-          version: v0.8.0
-        - address: aura1ysy0qh3cl7lrrndd4f5k9594nvuja9h2wwtd8fzsj3vw4kkse3lq2hq868
-          code_id: "399"
-          git_asset_name: nois_demo
-          instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
-          name: nois-demo
-          url: "https://github.com/noislabs/nois-contracts"
-          version: v0.8.0
-        - address: aura1akudxf7hw48u9282qd4pdxujdw34v6l7adpqkmvgtfwv66qfqwzq9jentz
-          code_id: "401"
-          git_asset_name: double_dice_roll
-          instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
-          name: double-dice-roll
-          url: "https://github.com/noislabs/nois-dapp-examples"
-          version: v0.5.0
-  - binary_name: starsd
-    chain_id: elgafar-1
-    denom: ustars
-    faucet: ~
-    gas_price: 0.025
-    ibc_connection:
-      dest: connection-29
-      src: connection-30
-      counterpart:
-        chain: nois-testnet-003
-        contract_name: nois-gateway
-    name: elgafar-1
-    prefix: stars
-    rpc:
-      - "https://rpc.elgafar-1.stargaze-apis.com:443"
-    wasm:
-      contracts:
-        - address: stars1elnw5rn8yfarwgd8p4a90pl8av3ay50kjmze9t09jgq5kxkxsd3skhrf04
-          code_id: "747"
-          git_asset_name: nois_proxy
-          instantiation_msg: '{"prices":[{"denom":"TEMPLATE_DENOM","amount":"100"}],"withdrawal_address":"TEMPLATE_WITHDRAWAL_ADDRESS","test_mode":false}'
-          name: nois-proxy
-          url: "https://github.com/noislabs/nois-contracts"
-          version: v0.8.0
-        - address: stars16v6d63e96f5mfhcechuc0ztpmh7zvcnah23r66js6kuk28qecjnqnsszdn
-          code_id: "748"
-          git_asset_name: nois_demo
-          instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
-          name: nois-demo
-          url: "https://github.com/noislabs/nois-contracts"
-          version: v0.8.0
-        - address: stars1kh7kv32yyyr36nxw2xs9nzvz5q4x2vgjllkq2ufd69e5343rrl8qqvuh8h
-          code_id: "750"
-          git_asset_name: double_dice_roll
-          instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
-          name: double-dice-roll
-          url: "https://github.com/noislabs/nois-dapp-examples"
-          version: v0.5.0
+          #  - binary_name: aurad
+          #    chain_id: euphoria-2
+          #    denom: ueaura
+          #    faucet: ~
+          #    gas_price: 0.04
+          #    ibc_connection:
+          #      dest: connection-31
+          #      src: connection-19
+          #      counterpart:
+          #        chain: nois-testnet-003
+          #        contract_name: nois-gateway
+          #    name: euphoria-2
+          #    prefix: aura
+          #    rpc:
+          #      - "https://rpc.euphoria.aura.network:443"
+          #    wasm:
+          #      contracts:
+          #        - address: aura19z2hv8l87qwg8nnq6v76efjm2rm78rkdghq4rkxfgqrzv3usw8lq26rmwt
+          #          code_id: "398"
+          #          git_asset_name: nois_proxy
+          #          instantiation_msg: '{"prices":[{"denom":"TEMPLATE_DENOM","amount":"100"}],"withdrawal_address":"TEMPLATE_WITHDRAWAL_ADDRESS","test_mode":false}'
+          #          name: nois-proxy
+          #          url: "https://github.com/noislabs/nois-contracts"
+          #          version: v0.8.0
+          #        - address: aura1ysy0qh3cl7lrrndd4f5k9594nvuja9h2wwtd8fzsj3vw4kkse3lq2hq868
+          #          code_id: "399"
+          #          git_asset_name: nois_demo
+          #          instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
+          #          name: nois-demo
+          #          url: "https://github.com/noislabs/nois-contracts"
+          #          version: v0.8.0
+          #        - address: aura1akudxf7hw48u9282qd4pdxujdw34v6l7adpqkmvgtfwv66qfqwzq9jentz
+          #          code_id: "401"
+          #          git_asset_name: double_dice_roll
+          #          instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
+          #          name: double-dice-roll
+          #          url: "https://github.com/noislabs/nois-dapp-examples"
+          #          version: v0.5.0
+          #  - binary_name: starsd
+          #    chain_id: elgafar-1
+          #    denom: ustars
+          #    faucet: ~
+          #    gas_price: 0.025
+          #    ibc_connection:
+          #      dest: connection-29
+          #      src: connection-30
+          #      counterpart:
+          #        chain: nois-testnet-003
+          #        contract_name: nois-gateway
+          #    name: elgafar-1
+          #    prefix: stars
+          #    rpc:
+          #      - "https://rpc.elgafar-1.stargaze-apis.com:443"
+          #    wasm:
+          #      contracts:
+          #        - address: stars1elnw5rn8yfarwgd8p4a90pl8av3ay50kjmze9t09jgq5kxkxsd3skhrf04
+          #          code_id: "747"
+          #          git_asset_name: nois_proxy
+          #          instantiation_msg: '{"prices":[{"denom":"TEMPLATE_DENOM","amount":"100"}],"withdrawal_address":"TEMPLATE_WITHDRAWAL_ADDRESS","test_mode":false}'
+          #          name: nois-proxy
+          #          url: "https://github.com/noislabs/nois-contracts"
+          #          version: v0.8.0
+          #        - address: stars16v6d63e96f5mfhcechuc0ztpmh7zvcnah23r66js6kuk28qecjnqnsszdn
+          #          code_id: "748"
+          #          git_asset_name: nois_demo
+          #          instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
+          #          name: nois-demo
+          #          url: "https://github.com/noislabs/nois-contracts"
+          #          version: v0.8.0
+          #        - address: stars1kh7kv32yyyr36nxw2xs9nzvz5q4x2vgjllkq2ufd69e5343rrl8qqvuh8h
+          #          code_id: "750"
+          #          git_asset_name: double_dice_roll
+          #          instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
+          #          name: double-dice-roll
+          #          url: "https://github.com/noislabs/nois-dapp-examples"
+          #          version: v0.5.0
   - binary_name: junod
-    chain_id: uni-5
+    chain_id: uni-6
     denom: ujunox
     faucet: "https://faucet.uni.juno.deuslabs.fi"
     gas_price: 0.025
     ibc_connection:
-      dest: connection-28
-      src: connection-267
+      dest: connection-33
+      src: connection-13
       counterpart:
         chain: nois-testnet-003
         contract_name: nois-gateway
-    name: uni-5
+    name: uni-6
     prefix: juno
     rpc:
       - "https://rpc.uni.junonetwork.io:443"
     wasm:
       contracts:
-        - address: juno1qaxkgcrhwxd49amdjyhhf0rxlsvgw4qztuuw8gs02luj79su2cusaq0pxr
-          code_id: "3822"
+        - address: juno19kjpww8rpqlauqqqdnm8j22hhgjrla2rw47574tz9y6mgmq2znmqq3c0dk
+          code_id: "186"
           git_asset_name: nois_proxy
           instantiation_msg: '{"prices":[{"denom":"TEMPLATE_DENOM","amount":"100"}],"withdrawal_address":"TEMPLATE_WITHDRAWAL_ADDRESS","test_mode":false}'
           name: nois-proxy
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.8.0
-        - address: juno1v75a4xwlkns6yz433fyh80gszausmpuuhx4amdpff8frdzsfygyq305my6
-          code_id: "3823"
+        - address: juno186n4q7z44zhcuryjsyq0u8yywgwnjyq54gl6v9m0xv8jsgwa3tpsqn7v53
+          code_id: "187"
           git_asset_name: nois_demo
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: nois-demo
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.8.0
-        - address: juno1ae39n54d57fs896pflpcw3kyu0za89ffzjfd0lv86u7u66hupp7slpuc69
-          code_id: "3827"
+        - address: juno1yfkpqqa9he345vylq6jdrh7t2m6e0vepzarscklx9quec3juqctqnv04de
+          code_id: "188"
           git_asset_name: double_dice_roll
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: double-dice-roll
           url: "https://github.com/noislabs/nois-dapp-examples"
           version: v0.5.0
-  - binary_name: juno1d
-    chain_id: juno-1
-    denom: ujuno
-    faucet: ~
-    gas_price: 0.0025
-    ibc_connection:
-      dest: connection-16
-      src: connection-255
-      counterpart:
-        chain: nois-testnet-003
-        contract_name: nois-gateway
-    name: juno-1
-    prefix: juno
-    rpc:
-      - "https://rpc-juno.mib.tech:443"
-    wasm:
-      contracts:
-        - address: "null"
-          code_id: "null"
-          git_asset_name: nois_proxy
-          instantiation_msg: '{"prices":[{"denom":"TEMPLATE_DENOM","amount":"500000"}],"withdrawal_address":"TEMPLATE_WITHDRAWAL_ADDRESS","test_mode":false}'
-          name: nois-proxy
-          url: "https://github.com/noislabs/nois-contracts"
-          version: v0.8.0
-        - address: "null"
-          code_id: "null"
-          git_asset_name: double_dice_roll
-          instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
-          name: double-dice-roll
-          url: "https://github.com/noislabs/nois-dapp-examples"
-          version: v0.5.0
+#  - binary_name: juno1d
+#    chain_id: juno-1
+#    denom: ujuno
+#    faucet: ~
+#    gas_price: 0.0025
+#    ibc_connection:
+#      dest: connection-16
+#      src: connection-255
+#      counterpart:
+#        chain: nois-testnet-003
+#        contract_name: nois-gateway
+#    name: juno-1
+#    prefix: juno
+#    rpc:
+#      - "https://rpc-juno.mib.tech:443"
+#    wasm:
+#      contracts:
+#        - address: "null"
+#          code_id: "null"
+#          git_asset_name: nois_proxy
+#          instantiation_msg: '{"prices":[{"denom":"TEMPLATE_DENOM","amount":"500000"}],"withdrawal_address":"TEMPLATE_WITHDRAWAL_ADDRESS","test_mode":false}'
+#          name: nois-proxy
+#          url: "https://github.com/noislabs/nois-contracts"
+#          version: v0.8.0
+#        - address: "null"
+#          code_id: "null"
+#          git_asset_name: double_dice_roll
+#          instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
+#          name: double-dice-roll
+#          url: "https://github.com/noislabs/nois-dapp-examples"
+#          version: v0.5.0
 ibc:
   relayer:
     docker_image: noislabs/nois-relayer
