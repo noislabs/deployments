@@ -112,38 +112,38 @@ chains:
           url: "https://github.com/noislabs/nois-dapp-examples"
           version: v0.5.0
   - binary_name: junod
-    chain_id: uni-5
+    chain_id: uni-6
     denom: ujunox
     faucet: "https://faucet.uni.juno.deuslabs.fi"
     gas_price: 0.025
     ibc_connection:
-      dest: connection-28
-      src: connection-267
+      dest: connection-33
+      src: connection-13
       counterpart:
         chain: nois-testnet-003
         contract_name: nois-gateway
-    name: uni-5
+    name: uni-6
     prefix: juno
     rpc:
       - "https://rpc.uni.junonetwork.io:443"
     wasm:
       contracts:
-        - address: juno1qaxkgcrhwxd49amdjyhhf0rxlsvgw4qztuuw8gs02luj79su2cusaq0pxr
-          code_id: "3822"
+        - address: juno19kjpww8rpqlauqqqdnm8j22hhgjrla2rw47574tz9y6mgmq2znmqq3c0dk
+          code_id: "186"
           git_asset_name: nois_proxy
           instantiation_msg: '{"prices":[{"denom":"TEMPLATE_DENOM","amount":"100"}],"withdrawal_address":"TEMPLATE_WITHDRAWAL_ADDRESS","test_mode":false}'
           name: nois-proxy
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.8.0
-        - address: juno1v75a4xwlkns6yz433fyh80gszausmpuuhx4amdpff8frdzsfygyq305my6
-          code_id: "3823"
+        - address: juno186n4q7z44zhcuryjsyq0u8yywgwnjyq54gl6v9m0xv8jsgwa3tpsqn7v53
+          code_id: "187"
           git_asset_name: nois_demo
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: nois-demo
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.8.0
-        - address: juno1ae39n54d57fs896pflpcw3kyu0za89ffzjfd0lv86u7u66hupp7slpuc69
-          code_id: "3827"
+        - address: juno1yfkpqqa9he345vylq6jdrh7t2m6e0vepzarscklx9quec3juqctqnv04de
+          code_id: "188"
           git_asset_name: double_dice_roll
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: double-dice-roll
