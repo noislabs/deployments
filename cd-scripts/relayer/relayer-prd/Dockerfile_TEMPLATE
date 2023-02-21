@@ -1,0 +1,10 @@
+#This is a nois relayer that is pre configured by noislabs for prod use. 
+
+
+FROM DOCKER_IMAGE_TEMPLATE
+
+
+COPY entrypoint.sh entrypoint.sh
+RUN chmod +x entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
