@@ -31,10 +31,16 @@ else
 fi
 
 chains_list=($(yq -r '.chains[].name' config.yaml))
+ignore=( "euphoria-2" "elgafar-1" "juno-1")
 
 
 for chain in "${chains_list[@]}"
 do
+    # Check if the current chain is in the ignore list
+    if [[ "${ignore[@]}" =~ "$chain" ]]; then
+        echo "Skipping $chain, it is in the ignore list"
+        continue
+    fi
     contracts_list=($(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[].name' config.yaml))
     BINARY_NAME=($(yq -r '.chains[]| select(.name=="'"$chain"'").binary_name' config.yaml))
     CHAIN_ID=($(yq -r '.chains[]| select(.name=="'"$chain"'").chain_id' config.yaml))
@@ -85,6 +91,11 @@ do
 
           echo "$chain - $contract : storing contract"
           CODE_ID=$($BINARY_NAME tx wasm store ../artifacts/$GIT_CONTRACTS_ASSET.wasm --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y |yq -r ".logs[0].events[1].attributes[1].value") #for wasmd 0.29.0-rc2 and maybe above, change attributes[0] --> attributes[1]
+          # Check if the CODE_ID variable is null
+          if [ "$CODE_ID" = "null" ]; then
+              echo "Skipping $contract, CODE_ID is null"
+              continue
+          fi
           yq -i '(.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").code_id) = "'"$CODE_ID"'"' config.yaml
           
           echo "$chain - $contract : Instantiating contract"
