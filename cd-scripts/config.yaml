@@ -124,8 +124,8 @@ chains:
     faucet: "https://faucet.uni.juno.deuslabs.fi"
     gas_price: 0.025
     ibc_connection:
-      dest: connection-38
-      src: connection-61
+      dest: connection-39
+      src: connection-73
       counterpart:
         chain: nois-testnet-003
         contract_name: nois-gateway
@@ -135,22 +135,22 @@ chains:
       - "https://rpc.uni.junonetwork.io:443"
     wasm:
       contracts:
-        - address: "juno1gz5959mh8xv6s3m8wacwdzz33wr4gk4rphna403rtpc3wyk0rsys4r8uw2"
-          code_id: "324"
+        - address: juno162vdumcg626zxumvuh9u6vxcakr3rrn804dxfex8qfxnhrldl68ss0lrdn
+          code_id: "338"
           git_asset_name: nois_proxy
           instantiation_msg: '{"prices":[{"denom":"TEMPLATE_DENOM","amount":"100"}],"withdrawal_address":"TEMPLATE_WITHDRAWAL_ADDRESS","callback_gas_limit":500000,"test_mode":false}'
           name: nois-proxy
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.9.0
-        - address: "juno1rquemycmaz0jvhmlkmvpzc9kfwszsdkxzu4dlufklegqka436a2qj8lwur"
-          code_id: "325"
+        - address: juno1g50vkqwx3dfd2neastp9je8har0se8wme27kz323dafgddv0tutsx7tk4u
+          code_id: "339"
           git_asset_name: nois_demo
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: nois-demo
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.9.0
-        - address: juno124dktlf9c7rfm96f69a66z9hvydp8ycfrq86l4frx3v2s9gkmtds2xx4cg
-          code_id: "331"
+        - address: juno1lyy9x3akvh95uvcuyyaevluvsljzaqp8myhlfdyxzv38n0czamkq4uqu0h
+          code_id: "340"
           git_asset_name: double_dice_roll
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: double-dice-roll

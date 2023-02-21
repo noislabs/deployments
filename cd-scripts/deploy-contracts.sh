@@ -31,7 +31,8 @@ else
 fi
 
 chains_list=($(yq -r '.chains[].name' config.yaml))
-ignore=( "euphoria-2" "elgafar-1" "juno-1")
+#ignore=( "euphoria-2" "elgafar-1" "juno-1" "uni-6")
+ignore=( "juno-1")
 
 
 for chain in "${chains_list[@]}"
@@ -151,24 +152,38 @@ do
 
 
         if [ ${#RELAYER_IBC_SRC_CONNECTION} -le 10 ] || [ ${#RELAYER_IBC_DEST_CONNECTION} -le 10 ] ; 
-        then echo "$chain : WARN: RELAYER_IBC_SRC_CONNECTION or RELAYER_IBC_DEST_CONNECTION are not defined ";
+        then 
+             echo "$chain : WARN: RELAYER_IBC_SRC_CONNECTION or RELAYER_IBC_DEST_CONNECTION are not defined ";
              echo "$chain : Creating a connection... please note the src and connection ids and define those variables accordingly"
              
              docker run  -e RELAYER_MNEMONIC="$RELAYER_MNEMONIC" $RELAYER_DOCKER_IMAGE:$CHAIN_ID-$NOIS_PROXY_CONTRACT_ADDRESS ibc-setup connect
-        else echo "$chain : Info: RELAYER_IBC_SRC_CONNECTION and RELAYER_IBC_DEST_CONNECTION are set, skipping connection creation"; 
+        else 
+             echo "$chain : Info: RELAYER_IBC_SRC_CONNECTION and RELAYER_IBC_DEST_CONNECTION are set, skipping connection creation"; 
+             # Create relayer docker production
+             pwd
+             DOCKER_IMAGE_TEMPLATE=$RELAYER_DOCKER_IMAGE:$CHAIN_ID-$NOIS_PROXY_CONTRACT_ADDRESS
+             sed "s#DOCKER_IMAGE_TEMPLATE#${DOCKER_IMAGE_TEMPLATE}#" relayer-prd/Dockerfile_TEMPLATE > relayer-prd/Dockerfile
+             sed "s#RELAYER_IBC_SRC_CONNECTION#${RELAYER_IBC_SRC_CONNECTION}#" relayer-prd/entrypoint-template.sh > relayer-prd/entrypoint.sh
+             sed -i '' "s#RELAYER_IBC_DEST_CONNECTION#${RELAYER_IBC_DEST_CONNECTION}#" relayer-prd/entrypoint.sh
+             sed -i '' "s#SRC_CHAIN#${chain}#" relayer-prd/entrypoint.sh
+             sed -i '' "s#DEST_CHAIN#${COUNTER_PART_CHAIN}#" relayer-prd/entrypoint.sh
+             cd relayer-prd
+             docker build  -t $DOCKER_IMAGE_TEMPLATE-prd .
+             docker push $DOCKER_IMAGE_TEMPLATE-prd
+             cd ..
         fi
         
         
         echo "$chain : check if channel exists"
         channel_exists=true
         $BINARY_NAME query ibc channel channels  --node=$NODE_URL   --limit=100000 |yq -r '.channels[]|select(.version=="'"$RELAYER_IBC_VERSION"'")| select(.port_id=="'"wasm.$NOIS_PROXY_CONTRACT_ADDRESS"'").channel_id |length' -e || channel_exists=false
-        #if [ "$channel_exists" = true ];
-        #then
-        #    echo "$chain : channel already exists. skipping channel creation"
-        #else
-            echo "$chain : creating IBC channel"
-            docker run  -e RELAYER_MNEMONIC="$RELAYER_MNEMONIC" $RELAYER_DOCKER_IMAGE:$CHAIN_ID-$NOIS_PROXY_CONTRACT_ADDRESS ibc-setup channel --src-connection=$RELAYER_IBC_SRC_CONNECTION --dest-connection=$RELAYER_IBC_DEST_CONNECTION --src-port=wasm.$NOIS_PROXY_CONTRACT_ADDRESS --dest-port=wasm.$NOIS_GATEWAY_CONTRACT_ADDRESS --version=$RELAYER_IBC_VERSION
-        #fi
+        if [ "$channel_exists" = true ];
+        then
+            echo "$chain : channel already exists. skipping channel creation"
+        else
+           echo "$chain : creating IBC channel"
+           docker run  -e RELAYER_MNEMONIC="$RELAYER_MNEMONIC" $RELAYER_DOCKER_IMAGE:$CHAIN_ID-$NOIS_PROXY_CONTRACT_ADDRESS ibc-setup channel --src-connection=$RELAYER_IBC_SRC_CONNECTION --dest-connection=$RELAYER_IBC_DEST_CONNECTION --src-port=wasm.$NOIS_PROXY_CONTRACT_ADDRESS --dest-port=wasm.$NOIS_GATEWAY_CONTRACT_ADDRESS --version=$RELAYER_IBC_VERSION
+        fi
 
         
         
