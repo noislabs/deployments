@@ -48,8 +48,8 @@ chains:
     faucet: ~
     gas_price: 0.04
     ibc_connection:
-      dest: connection-34
-      src: connection-22
+      dest: ~
+      src: ~
       counterpart:
         chain: nois-testnet-004
         contract_name: nois-gateway
@@ -86,8 +86,8 @@ chains:
     faucet: ~
     gas_price: 0.025
     ibc_connection:
-      dest: connection-35
-      src: connection-134
+      dest: ~
+      src: ~
       counterpart:
         chain: nois-testnet-004
         contract_name: nois-gateway
@@ -124,8 +124,8 @@ chains:
     faucet: "https://faucet.uni.juno.deuslabs.fi"
     gas_price: 0.025
     ibc_connection:
-      dest: connection-39
-      src: connection-73
+      dest: ~
+      src: ~
       counterpart:
         chain: nois-testnet-004
         contract_name: nois-gateway
