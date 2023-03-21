@@ -11,32 +11,32 @@ chains:
     name: nois-testnet-004
     prefix: nois
     rpc:
-      - "https://nois-004.rpc.bccnodes.com"
+      - "https://nois-004.rpc.bccnodes.com:443"
     wasm:
       contracts:
-        - address:
-          code_id: "86"
+        - address: nois16peq3sftghumkja7nu32ztjy0ew4vsnshxfhcv6sxq573ta08gwsgldepm
+          code_id: "11"
           git_asset_name: nois_drand
           instantiation_msg: '{"incentive_point_price":"25000","incentive_denom":"unois","min_round":TEMPLATE_MIN_ROUND,"manager":"nois1p9tw323xdjp5q3yzuecfahmgrpufmm89z93wpk"}'
           name: nois-drand
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.10.0
-        - address:
-          code_id: 
+        - address: nois1ze9qajd25ucqnvn2u865uhdtjd6qm5awm3tpl93ure72wgs4d7qsptqc0u
+          code_id: "12"
           git_asset_name: nois_gateway
           instantiation_msg: '{}'
           name: nois-gateway
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.10.0
-        - address:
-          code_id: 
+        - address: nois1mdjzz7y7crnjgfkdld4x9ravqymh22jy2c7jpukqnkghhzv5s9ys2a9hu7
+          code_id: "14"
           git_asset_name: nois_icecube
           instantiation_msg: '{"manager":"nois1p9tw323xdjp5q3yzuecfahmgrpufmm89z93wpk"}'
           name: nois-icecube
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.10.0
-        - address:
-          code_id: 
+        - address: nois16rpxzry8jf06j8htjphf0lnmylh28enwm4xwkfpn3699wvyys2yqgcev3h
+          code_id: "13"
           git_asset_name: nois_sink
           instantiation_msg: '{}'
           name: nois-sink
@@ -60,21 +60,21 @@ chains:
     wasm:
       contracts:
         - address:
-          code_id: 
+          code_id:
           git_asset_name: nois_proxy
           instantiation_msg: '{"prices":[{"denom":"TEMPLATE_DENOM","amount":"100"}],"withdrawal_address":"TEMPLATE_WITHDRAWAL_ADDRESS","callback_gas_limit":500000,"test_mode":false}'
           name: nois-proxy
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.10.0
         - address:
-          code_id: 
+          code_id:
           git_asset_name: nois_demo
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: nois-demo
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.10.0
         - address:
-          code_id: 
+          code_id:
           git_asset_name: double_dice_roll
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: double-dice-roll
@@ -105,14 +105,14 @@ chains:
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.10.0
         - address:
-          code_id: 
+          code_id:
           git_asset_name: nois_demo
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: nois-demo
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.10.0
         - address:
-          code_id: 
+          code_id:
           git_asset_name: double_dice_roll
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: double-dice-roll
@@ -136,21 +136,21 @@ chains:
     wasm:
       contracts:
         - address:
-          code_id: 
+          code_id:
           git_asset_name: nois_proxy
           instantiation_msg: '{"prices":[{"denom":"TEMPLATE_DENOM","amount":"100"}],"withdrawal_address":"TEMPLATE_WITHDRAWAL_ADDRESS","callback_gas_limit":500000,"test_mode":false}'
           name: nois-proxy
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.10.0
         - address:
-          code_id: 
+          code_id:
           git_asset_name: nois_demo
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: nois-demo
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.10.0
         - address:
-          code_id: 
+          code_id:
           git_asset_name: double_dice_roll
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: double-dice-roll
@@ -174,14 +174,14 @@ chains:
     wasm:
       contracts:
         - address:
-          code_id: 
+          code_id:
           git_asset_name: nois_proxy
           instantiation_msg: '{"prices":[{"denom":"TEMPLATE_DENOM","amount":500000}],"withdrawal_address":"TEMPLATE_WITHDRAWAL_ADDRESS","callback_gas_limit":500000,"test_mode":false}'
           name: nois-proxy
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.10.0
         - address:
-          code_id: 
+          code_id:
           git_asset_name: double_dice_roll
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
           name: double-dice-roll
