@@ -18,6 +18,7 @@ discord_notify () {
 }
 
 TEMPLATE_MIN_ROUND=$(curl https://drand.cloudflare.com/dbd506d6ef76e5f386f41c651dcb808c5bcbd75471cc4eafa3f4df7ad4e4c493/public/latest | jq -r '.round')
+TEMPLATE_MIN_ROUND=$((TEMPLATE_MIN_ROUND + 28800)) #1 day
 
 SCRIPT_DIR="cd-scripts"
 KEYRING_KEY_NAME="deployment-key"
