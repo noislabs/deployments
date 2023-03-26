@@ -75,12 +75,16 @@ do
         CONTRACTS_ADDRESS=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").address' config.yaml)
         CONTRACT_INSTATIATION_MSG=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").instantiation_msg' config.yaml)  
         NOIS_PROXY_CONTRACT_ADDRESS=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="nois-proxy").address' config.yaml)
+        NOIS_SINK_CONTRACT_ADDRESS=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="nois-sink").address' config.yaml)
+        NOIS_PAYMENT_CODE_ID=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="nois-payment").code_id' config.yaml)
 
         CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_NOIS_PROXY#$NOIS_PROXY_CONTRACT_ADDRESS#" )
         CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_MIN_ROUND#$TEMPLATE_MIN_ROUND#" )
         CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_DENOM#$DENOM#" )
         TEMPLATE_WITHDRAWAL_ADDRESS=$DEPLOYMENT_KEY_BECH_ADDR
         CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_WITHDRAWAL_ADDRESS#$TEMPLATE_WITHDRAWAL_ADDRESS#" )
+        CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_SINK_ADDR#$NOIS_SINK_CONTRACT_ADDRESS#" )
+        CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_PAYMENT_CODE_ID#$NOIS_PAYMENT_CODE_ID#" )
         
 
         if [ "$CONTRACTS_ADDRESS" == "~" ] ||  [ "$CONTRACTS_ADDRESS" == "null" ] || [ ${#CONTRACTS_ADDRESS} -le 10 ] ;
@@ -93,12 +97,16 @@ do
 
           echo "$chain - $contract : storing contract"
           CODE_ID=$($BINARY_NAME tx wasm store ../artifacts/$GIT_CONTRACTS_ASSET.wasm --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y |yq -r ".logs[0].events[1].attributes[1].value") #for wasmd 0.29.0-rc2 and maybe above, change attributes[0] --> attributes[1]
-          # Check if the CODE_ID variable is null
-          if [ "$CODE_ID" = "null" ]; then
-              echo "Skipping $contract, CODE_ID is null"
+          yq -i '(.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").code_id) = "'"$CODE_ID"'"' config.yaml
+          # skip CODE_ID variable is null
+          if [ "$CODE_ID" = "null" ]  ; then
+              echo "Skipping $contract, CODE_ID is null "
               continue
           fi
-          yq -i '(.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").code_id) = "'"$CODE_ID"'"' config.yaml
+          if [ "$contract" = "nois-payment" ]  ; then
+              echo "Skipping $contract, contract is not meant to be instantiated"
+              continue
+          fi
           
           echo "$chain - $contract : Instantiating contract"
           CONTRACT_ADDRESS=$($BINARY_NAME tx wasm instantiate2 $CODE_ID $CONTRACT_INSTATIATION_MSG $INSTANTIATION_SALT   --label=$contract --admin $($BINARY_NAME keys show $KEYRING_KEY_NAME -a )  --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL  -y |yq -r '.logs[0].events[0].attributes[0].value' )
