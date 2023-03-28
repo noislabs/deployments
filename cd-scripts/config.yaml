@@ -1,6 +1,55 @@
 ---
 chains:
   - binary_name: noisd
+    chain_id: nois-1
+    denom: unois
+    faucet: ~
+    gas_price: 0.05
+    ibc_connection:
+      dest: ~
+      src: ~
+    name: nois-1
+    prefix: nois
+    rpc:
+      - https://nois-mainnet-rpc.bccnodes.com:443
+    wasm:
+      contracts:
+        - address: nois19w26q6n44xqepduudfz2xls4pc5lltpn6rxu34g0jshxu3rdujzsj7dgu8
+          code_id: "4"
+          git_asset_name: nois_drand
+          instantiation_msg: '{"incentive_point_price":"3000","incentive_denom":"unois","min_round":TEMPLATE_MIN_ROUND,"manager":"nois1p9tw323xdjp5q3yzuecfahmgrpufmm89z93wpk"}'
+          name: nois-drand
+          url: "https://github.com/noislabs/nois-contracts"
+          version: v0.11.0
+        - address: nois10c0ppz0n57hqrmfp7g7lqs6k4xk9rxhvcfkqt83r8mars2lc57mq0f6cty
+          code_id: "5"
+          git_asset_name: nois_sink
+          instantiation_msg: '{}'
+          name: nois-sink
+          url: "https://github.com/noislabs/nois-contracts"
+          version: v0.11.0
+        - address: nois1gwnfyx82rwgc4y9r8vx6nr9v35dwezw3dadw6h39mad9amg7shnsler5f0
+          code_id: "6"
+          git_asset_name: nois_icecube
+          instantiation_msg: '{"manager":"nois1p9tw323xdjp5q3yzuecfahmgrpufmm89z93wpk"}'
+          name: nois-icecube
+          url: "https://github.com/noislabs/nois-contracts"
+          version: v0.11.0
+          #- address:
+          #  code_id: 
+          #  git_asset_name: nois_payment
+          #  instantiation_msg: '{}'
+          #  name: nois-payment
+          #  url: "https://github.com/noislabs/nois-contracts"
+          #  version: v0.11.0
+          #- address:
+          #  code_id: 
+          #  git_asset_name: nois_gateway
+          #  instantiation_msg: '{"manager":"nois1p9tw323xdjp5q3yzuecfahmgrpufmm89z93wpk","price":{"denom":"TEMPLATE_DENOM","amount":"50000000"},"payment_code_id":"TEMPLATE_PAYMENT_CODE_ID","sink":"TEMPLATE_SINK_ADDR"}'
+          #  name: nois-gateway
+          #  url: "https://github.com/noislabs/nois-contracts"
+          #  version: v0.11.0
+  - binary_name: noisd
     chain_id: nois-testnet-004
     denom: unois
     faucet: "http://faucet.noislabs.com"
@@ -15,35 +64,35 @@ chains:
     wasm:
       contracts:
         - address:
-          code_id: 
+          code_id: "null"
           git_asset_name: nois_drand
-          instantiation_msg: '{"incentive_point_price":"25000","incentive_denom":"unois","min_round":TEMPLATE_MIN_ROUND,"manager":"nois1p9tw323xdjp5q3yzuecfahmgrpufmm89z93wpk"}'
+          instantiation_msg: '{"incentive_point_price":"3000","incentive_denom":"unois","min_round":TEMPLATE_MIN_ROUND,"manager":"nois1p9tw323xdjp5q3yzuecfahmgrpufmm89z93wpk"}'
           name: nois-drand
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.11.0
         - address:
-          code_id: 
+          code_id: "null"
           git_asset_name: nois_sink
           instantiation_msg: '{}'
           name: nois-sink
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.11.0
         - address:
-          code_id: 
+          code_id: "null"
           git_asset_name: nois_payment
           instantiation_msg: '{}'
           name: nois-payment
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.11.0
         - address:
-          code_id: 
+          code_id: "null"
           git_asset_name: nois_gateway
           instantiation_msg: '{"manager":"nois1p9tw323xdjp5q3yzuecfahmgrpufmm89z93wpk","price":{"denom":"TEMPLATE_DENOM","amount":"50000000"},"payment_code_id":"TEMPLATE_PAYMENT_CODE_ID","sink":"TEMPLATE_SINK_ADDR"}'
           name: nois-gateway
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.11.0
         - address:
-          code_id: 
+          code_id: "null"
           git_asset_name: nois_icecube
           instantiation_msg: '{"manager":"nois1p9tw323xdjp5q3yzuecfahmgrpufmm89z93wpk"}'
           name: nois-icecube
