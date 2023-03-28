@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 #PREREQS
 # 0 You need Install yq and fetch
@@ -22,7 +22,7 @@ TEMPLATE_MIN_ROUND=$((TEMPLATE_MIN_ROUND + 28800)) #1 day
 
 SCRIPT_DIR="cd-scripts"
 KEYRING_KEY_NAME="deployment-key"
-INSTANTIATION_SALT=11
+INSTANTIATION_SALT=01
 
 cd $SCRIPT_DIR
 
@@ -112,6 +112,7 @@ do
           fi
           
           echo "$chain - $contract : Instantiating contract"
+          sleep 5
           CONTRACT_ADDRESS=$($BINARY_NAME tx wasm instantiate2 $CODE_ID $CONTRACT_INSTATIATION_MSG $INSTANTIATION_SALT   --label=$contract --admin $($BINARY_NAME keys show $KEYRING_KEY_NAME -a )  --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL  -y |yq -r '.logs[0].events[0].attributes[0].value' )
           yq -i '(.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").address) = "'"$CONTRACT_ADDRESS"'"' config.yaml 
           echo "$chain - $contract : CONTRACT_ADDRESS: $CONTRACT_ADDRESS"
