@@ -22,7 +22,7 @@ TEMPLATE_MIN_ROUND=$((TEMPLATE_MIN_ROUND + 28800)) #1 day
 
 SCRIPT_DIR="cd-scripts"
 KEYRING_KEY_NAME="deployment-key"
-INSTANTIATION_SALT=01
+INSTANTIATION_SALT=11
 
 cd $SCRIPT_DIR
 
@@ -33,7 +33,7 @@ else
 fi
 
 chains_list=($(yq -r '.chains[].name' config.yaml))
-ignore=( "euphoria-2" "elgafar-1" "juno-1" "uni-6")
+ignore=( "euphoria-2" "elgafar-1" "juno-1" "uni-6" "nois-testnet-004")
 #ignore=( "juno-1" )
 
 
@@ -97,7 +97,9 @@ do
           echo "$chain - $contract : deployment of $contract in $chain"
 
           echo "$chain - $contract : storing contract"
-          CODE_ID=$($BINARY_NAME tx wasm store ../artifacts/$GIT_CONTRACTS_ASSET.wasm --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y |yq -r ".logs[0].events[1].attributes[1].value") #for wasmd 0.29.0-rc2 and maybe above, change attributes[0] --> attributes[1]
+          sleep 10
+          CODE_ID=$($BINARY_NAME tx wasm store ../artifacts/$GIT_CONTRACTS_ASSET.wasm --instantiate-anyof-addresses $DEPLOYMENT_KEY_BECH_ADDR --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y |yq -r ".logs[0].events[1].attributes[1].value") #for wasmd 0.29.0-rc2 and maybe above, change attributes[0] --> attributes[1]
+          sleep 10
           yq -i '(.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").code_id) = "'"$CODE_ID"'"' config.yaml
           # skip CODE_ID variable is null
           if [ "$CODE_ID" = "null" ]  ; then
