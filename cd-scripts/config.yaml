@@ -50,51 +50,51 @@ chains:
           #  url: "https://github.com/noislabs/nois-contracts"
           #  version: v0.11.0
   - binary_name: noisd
-    chain_id: nois-testnet-004
+    chain_id: nois-testnet-005
     denom: unois
     faucet: "http://faucet.noislabs.com"
     gas_price: 0.05
     ibc_connection:
       dest: ~
       src: ~
-    name: nois-testnet-004
+    name: nois-testnet-005
     prefix: nois
     rpc:
-      - "https://nois-004.rpc.bccnodes.com:443"
+      - "http://139.59.154.47:17357"
     wasm:
       contracts:
-        - address:
-          code_id: "null"
+        - address: nois14xef285hz5cx5q9hh32p9nztu3cct4g44sxjgx3dmftt2tj2rweqkjextk
+          code_id: "1"
           git_asset_name: nois_drand
-          instantiation_msg: '{"incentive_point_price":"3000","incentive_denom":"unois","min_round":TEMPLATE_MIN_ROUND,"manager":"nois1p9tw323xdjp5q3yzuecfahmgrpufmm89z93wpk"}'
+          instantiation_msg: '{"incentive_point_price":"3000","incentive_denom":"unois","min_round":TEMPLATE_MIN_ROUND,"manager":"nois1tfg9ptr84t9zshxxf5lkvrd6ej7gxjh75lztve"}'
           name: nois-drand
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.11.0
-        - address:
-          code_id: "null"
+        - address: nois10c0ppz0n57hqrmfp7g7lqs6k4xk9rxhvcfkqt83r8mars2lc57mq0f6cty
+          code_id: "5"
           git_asset_name: nois_sink
           instantiation_msg: '{}'
           name: nois-sink
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.11.0
-        - address:
-          code_id: "null"
-          git_asset_name: nois_payment
-          instantiation_msg: '{}'
-          name: nois-payment
-          url: "https://github.com/noislabs/nois-contracts"
-          version: v0.11.0
-        - address:
-          code_id: "null"
-          git_asset_name: nois_gateway
-          instantiation_msg: '{"manager":"nois1p9tw323xdjp5q3yzuecfahmgrpufmm89z93wpk","price":{"denom":"TEMPLATE_DENOM","amount":"50000000"},"payment_code_id":"TEMPLATE_PAYMENT_CODE_ID","sink":"TEMPLATE_SINK_ADDR"}'
-          name: nois-gateway
-          url: "https://github.com/noislabs/nois-contracts"
-          version: v0.11.0
-        - address:
-          code_id: "null"
+        #- address:
+        #  code_id: "null"
+        #  git_asset_name: nois_payment
+        #  instantiation_msg: '{}'
+        #  name: nois-payment
+        #  url: "https://github.com/noislabs/nois-contracts"
+        #  version: v0.11.0
+        #- address:
+        #  code_id: "null"
+        #  git_asset_name: nois_gateway
+        #  instantiation_msg: '{"manager":"nois1tfg9ptr84t9zshxxf5lkvrd6ej7gxjh75lztve","price":{"denom":"TEMPLATE_DENOM","amount":"50000000"},"payment_code_id":"TEMPLATE_PAYMENT_CODE_ID","sink":"TEMPLATE_SINK_ADDR"}'
+        #  name: nois-gateway
+        #  url: "https://github.com/noislabs/nois-contracts"
+        #  version: v0.11.0
+        - address: nois1gwnfyx82rwgc4y9r8vx6nr9v35dwezw3dadw6h39mad9amg7shnsler5f0
+          code_id: "6"
           git_asset_name: nois_icecube
-          instantiation_msg: '{"manager":"nois1p9tw323xdjp5q3yzuecfahmgrpufmm89z93wpk"}'
+          instantiation_msg: '{"manager":"nois1tfg9ptr84t9zshxxf5lkvrd6ej7gxjh75lztve"}'
           name: nois-icecube
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.11.0
@@ -107,7 +107,7 @@ chains:
       dest: ~
       src: ~
       counterpart:
-        chain: nois-testnet-004
+        chain: nois-testnet-005
         contract_name: nois-gateway
     name: euphoria-2
     prefix: aura
@@ -145,7 +145,7 @@ chains:
       dest: ~
       src: ~
       counterpart:
-        chain: nois-testnet-004
+        chain: nois-testnet-005
         contract_name: nois-gateway
     name: elgafar-1
     prefix: stars
@@ -183,7 +183,7 @@ chains:
       dest: ~
       src: ~
       counterpart:
-        chain: nois-testnet-004
+        chain: nois-testnet-005
         contract_name: nois-gateway
     name: uni-6
     prefix: juno
@@ -221,7 +221,7 @@ chains:
       dest: ~
       src: ~
       counterpart:
-        chain: nois-testnet-004
+        chain: nois-testnet-005
         contract_name: nois-gateway
     name: juno-1
     prefix: juno

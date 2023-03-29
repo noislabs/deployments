@@ -33,7 +33,7 @@ else
 fi
 
 chains_list=($(yq -r '.chains[].name' config.yaml))
-ignore=( "euphoria-2" "elgafar-1" "juno-1" "uni-6" "nois-testnet-004")
+ignore=( "euphoria-2" "elgafar-1" "juno-1" "uni-6" "nois-1")
 #ignore=( "juno-1" )
 
 
