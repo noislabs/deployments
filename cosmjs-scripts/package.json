@@ -1,0 +1,22 @@
+{
+  "name": "cosmjs-scripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "execute": "cosmjs-cli",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "@cosmjs/cli": "^0.30.1",
+    "@cosmjs/cosmwasm-stargate": "^0.30.1",
+    "@cosmjs/encoding": "^0.30.1",
+    "@cosmjs/stargate": "^0.30.1",
+    "@cosmjs/tendermint-rpc": "^0.30.1",
+    "@cosmjs/utils": "^0.30.1"
+  }
+}
