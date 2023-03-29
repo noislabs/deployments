@@ -96,8 +96,10 @@ nois1d0pzh0ysr3kc7a49kk5lsxlaj3p3wfrc8wpaxv
 nois1japw0qknmdey9p9r9j95qr9pm5wmpupkehaz9j
 nois1eykwyss2rtuhqcqw3gryz52jnfmvpep9kwftnp
 nois1gykx5en0543f47yd6m0g69c04ah63zk8px8x7z
-`.trim().split("\n").map(row => row.trim());
-
+`
+  .trim()
+  .split("\n")
+  .map((row) => row.trim());
 
 // console.log(addresses)
 
@@ -142,4 +144,6 @@ for (const address of addresses) {
   }
 }
 
-console.log(`Registered: ${registered} Jailed: ${jailed} Unregistered: ${unregistered}`);
+console.log(
+  `Registered: ${registered} Jailed: ${jailed} Unregistered: ${unregistered}`
+);
