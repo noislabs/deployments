@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -e
 
 #PREREQS
 # 0 You need Install yq and fetch
@@ -14,7 +14,7 @@ discord_notify () {
   curl  -H "Content-Type: application/json" \
         -H "Content-Type:application/json" \
         -XPOST -d '{"content": "'"_________________\n**$2** - **$3** :\n Version: **$4**\n Address:  **$5** "'"}' \
-        $1; 
+        $1;
 }
 
 TEMPLATE_MIN_ROUND=$(curl https://drand.cloudflare.com/dbd506d6ef76e5f386f41c651dcb808c5bcbd75471cc4eafa3f4df7ad4e4c493/public/latest | jq -r '.round')
@@ -33,8 +33,8 @@ else
 fi
 
 chains_list=($(yq -r '.chains[].name' config.yaml))
-ignore=( "euphoria-2" "elgafar-1" "juno-1" "uni-6" "nois-1")
-#ignore=( "juno-1" )
+ignore=( "euphoria-2" "elgafar-1" "juno-1"  "nois-1")
+#ignore=( "juno-1" "uni-6")
 
 
 for chain in "${chains_list[@]}"
@@ -54,27 +54,27 @@ do
     RELAYER_IBC_DEST_CONNECTION=($(yq -r '.chains[]| select(.name=="'"$chain"'").ibc_connection.dest' config.yaml))
     PREFIX=($(yq -r '.chains[]| select(.name=="'"$chain"'").prefix' config.yaml))
     NODE_URL=($(yq -r '.chains[]| select(.name=="'"$chain"'").rpc[0]' config.yaml))
-    DEPLOYMENT_KEY_BECH_ADDR=$($BINARY_NAME keys show $KEYRING_KEY_NAME -a ) 
+    DEPLOYMENT_KEY_BECH_ADDR=$($BINARY_NAME keys show $KEYRING_KEY_NAME -a )
 
     echo "$chain : add key if it does not exist"
-    $BINARY_NAME keys show $KEYRING_KEY_NAME >/dev/null || echo $MNEMONIC | $BINARY_NAME keys  add  $KEYRING_KEY_NAME --recover 
-        
+    $BINARY_NAME keys show $KEYRING_KEY_NAME >/dev/null || echo $MNEMONIC | $BINARY_NAME keys  add  $KEYRING_KEY_NAME --recover
+
     if [ "$FAUCET_URL" == "~" ] ;
         then echo "$chain : Info: Faucet is not relevant here";
         else echo "$chain : Trying to add credit for chain '$CHAIN_ID' with faucet '$FAUCET_URL'";
           curl -XPOST -H 'Content-type: application/json' -d "{\"address\":\"$DEPLOYMENT_KEY_BECH_ADDR\",\"denom\":\"$DENOM\"}" $FAUCET_URL/credit
           echo "$chain - $contract : querying new balance ..."
-          $BINARY_NAME query bank balances $DEPLOYMENT_KEY_BECH_ADDR --node=$NODE_URL | yq -r '.balances' 
+          $BINARY_NAME query bank balances $DEPLOYMENT_KEY_BECH_ADDR --node=$NODE_URL | yq -r '.balances'
     fi
 
     for contract in "${contracts_list[@]}"
     do
-    
+
         GIT_CONTRACTS_URL=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").url' config.yaml)
         GIT_CONTRACTS_TAG=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").version' config.yaml)
         GIT_CONTRACTS_ASSET=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").git_asset_name' config.yaml)
         CONTRACTS_ADDRESS=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").address' config.yaml)
-        CONTRACT_INSTATIATION_MSG=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").instantiation_msg' config.yaml)  
+        CONTRACT_INSTATIATION_MSG=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").instantiation_msg' config.yaml)
         NOIS_PROXY_CONTRACT_ADDRESS=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="nois-proxy").address' config.yaml)
         NOIS_SINK_CONTRACT_ADDRESS=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="nois-sink").address' config.yaml)
         NOIS_PAYMENT_CODE_ID=$(yq -r '.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="nois-payment").code_id' config.yaml)
@@ -86,20 +86,20 @@ do
         CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_WITHDRAWAL_ADDRESS#$TEMPLATE_WITHDRAWAL_ADDRESS#" )
         CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_SINK_ADDR#$NOIS_SINK_CONTRACT_ADDRESS#" )
         CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_PAYMENT_CODE_ID#$NOIS_PAYMENT_CODE_ID#" )
-        
+
 
         if [ "$CONTRACTS_ADDRESS" == "~" ] ||  [ "$CONTRACTS_ADDRESS" == "null" ] || [ ${#CONTRACTS_ADDRESS} -le 10 ] ;
-        then 
-          
+        then
+
           echo "$chain - $contract : downloading $contract from $GIT_CONTRACTS_URL from release $GIT_CONTRACTS_TAG"
           fetch --repo="$GIT_CONTRACTS_URL" --tag="$GIT_CONTRACTS_TAG" --release-asset="$GIT_CONTRACTS_ASSET.wasm" ../artifacts
 
           echo "$chain - $contract : deployment of $contract in $chain"
 
           echo "$chain - $contract : storing contract"
-          sleep 10
+          sleep 2
           CODE_ID=$($BINARY_NAME tx wasm store ../artifacts/$GIT_CONTRACTS_ASSET.wasm --instantiate-anyof-addresses $DEPLOYMENT_KEY_BECH_ADDR --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y |yq -r ".logs[0].events[1].attributes[1].value") #for wasmd 0.29.0-rc2 and maybe above, change attributes[0] --> attributes[1]
-          sleep 10
+          sleep 2
           yq -i '(.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").code_id) = "'"$CODE_ID"'"' config.yaml
           # skip CODE_ID variable is null
           if [ "$CODE_ID" = "null" ]  ; then
@@ -110,22 +110,22 @@ do
               echo "Skipping $contract, contract is not meant to be instantiated"
               continue
           fi
-          
+
           echo "$chain - $contract : Instantiating contract"
-          sleep 5
+          sleep 2
           CONTRACT_ADDRESS=$($BINARY_NAME tx wasm instantiate2 $CODE_ID $CONTRACT_INSTATIATION_MSG $INSTANTIATION_SALT   --label=$contract --admin $($BINARY_NAME keys show $KEYRING_KEY_NAME -a )  --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL  -y |yq -r '.logs[0].events[0].attributes[0].value' )
-          yq -i '(.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").address) = "'"$CONTRACT_ADDRESS"'"' config.yaml 
+          yq -i '(.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").address) = "'"$CONTRACT_ADDRESS"'"' config.yaml
           echo "$chain - $contract : CONTRACT_ADDRESS: $CONTRACT_ADDRESS"
 
-          if [ -z ${DISCORD_WEBHOOK+x} ] ; 
+          if [ -z ${DISCORD_WEBHOOK+x} ] ;
           then echo "WARN: Skipping notification because DISCORD_WEBHOOK is not set ";
           else discord_notify $DISCORD_WEBHOOK $chain $contract $GIT_CONTRACTS_TAG $CONTRACT_ADDRESS
           fi
-          
+
         else
           echo "$chain - $contract : Skipping deployment because contract address is already set to $CONTRACTS_ADDRESS";
         fi
-        
+
     done
     if [[ $PREFIX != *"nois"* ]]; #Customer chain
     then
@@ -152,26 +152,26 @@ do
         sed -i '' "s#TEMPLATE_CHAIN_NODE_URL#${NODE_URL}#" relayer/nois-relayer-config.yaml
         sed -i '' "s#TEMPLATE_NOIS_GATEWAY_CONTRACT_ADDRESS#${NOIS_GATEWAY_CONTRACT_ADDRESS}#" relayer/nois-relayer-config.yaml
         sed -i '' "s#TEMPLATE_NOIS_RPC#${TEMPLATE_NOIS_RPC}#" relayer/nois-relayer-config.yaml
-        sed -i '' "s#TEMPLATE_NOIS_FAUCET#${TEMPLATE_NOIS_FAUCET}#" relayer/nois-relayer-config.yaml 
-        sed -i '' "s#TEMPLATE_GAS_PRICES#${GAS_PRICES}#" relayer/nois-relayer-config.yaml       
-        sed -i '' "s#TEMPLATE_NOIS_GAS_PRICES#${TEMPLATE_NOIS_GAS_PRICES}#" relayer/nois-relayer-config.yaml     
-        
+        sed -i '' "s#TEMPLATE_NOIS_FAUCET#${TEMPLATE_NOIS_FAUCET}#" relayer/nois-relayer-config.yaml
+        sed -i '' "s#TEMPLATE_GAS_PRICES#${GAS_PRICES}#" relayer/nois-relayer-config.yaml
+        sed -i '' "s#TEMPLATE_NOIS_GAS_PRICES#${TEMPLATE_NOIS_GAS_PRICES}#" relayer/nois-relayer-config.yaml
+
         echo "$chain : building relayer docker"
         cd relayer
         docker build --build-arg CHAIN_NAME=$CHAIN_ID --build-arg NOIS_CHAIN_NAME=$COUNTER_PART_CHAIN -t $RELAYER_DOCKER_IMAGE:$CHAIN_ID-$NOIS_PROXY_CONTRACT_ADDRESS .
         docker run  -e RELAYER_MNEMONIC="$RELAYER_MNEMONIC" $RELAYER_DOCKER_IMAGE:$CHAIN_ID-$NOIS_PROXY_CONTRACT_ADDRESS ibc-setup keys list
-        
-        
 
 
-        if [ ${#RELAYER_IBC_SRC_CONNECTION} -le 10 ] || [ ${#RELAYER_IBC_DEST_CONNECTION} -le 10 ] ; 
-        then 
+
+
+        if [ ${#RELAYER_IBC_SRC_CONNECTION} -le 10 ] || [ ${#RELAYER_IBC_DEST_CONNECTION} -le 10 ] ;
+        then
              echo "$chain : WARN: RELAYER_IBC_SRC_CONNECTION or RELAYER_IBC_DEST_CONNECTION are not defined ";
              echo "$chain : Creating a connection... please note the src and connection ids and define those variables accordingly"
-             
+
              docker run  -e RELAYER_MNEMONIC="$RELAYER_MNEMONIC" $RELAYER_DOCKER_IMAGE:$CHAIN_ID-$NOIS_PROXY_CONTRACT_ADDRESS ibc-setup connect
-        else 
-             echo "$chain : Info: RELAYER_IBC_SRC_CONNECTION and RELAYER_IBC_DEST_CONNECTION are set, skipping connection creation"; 
+        else
+             echo "$chain : Info: RELAYER_IBC_SRC_CONNECTION and RELAYER_IBC_DEST_CONNECTION are set, skipping connection creation";
              # Create relayer docker production
              pwd
              DOCKER_IMAGE_TEMPLATE=$RELAYER_DOCKER_IMAGE:$CHAIN_ID-$NOIS_PROXY_CONTRACT_ADDRESS
@@ -185,8 +185,8 @@ do
              docker push $DOCKER_IMAGE_TEMPLATE-prd
              cd ..
         fi
-        
-        
+
+
         echo "$chain : check if channel exists"
         channel_exists=true
         $BINARY_NAME query ibc channel channels  --node=$NODE_URL   --limit=100000 |yq -r '.channels[]|select(.version=="'"$RELAYER_IBC_VERSION"'")| select(.port_id=="'"wasm.$NOIS_PROXY_CONTRACT_ADDRESS"'").channel_id |length' -e || channel_exists=false
@@ -198,14 +198,14 @@ do
            docker run  -e RELAYER_MNEMONIC="$RELAYER_MNEMONIC" $RELAYER_DOCKER_IMAGE:$CHAIN_ID-$NOIS_PROXY_CONTRACT_ADDRESS ibc-setup channel --src-connection=$RELAYER_IBC_SRC_CONNECTION --dest-connection=$RELAYER_IBC_DEST_CONNECTION --src-port=wasm.$NOIS_PROXY_CONTRACT_ADDRESS --dest-port=wasm.$NOIS_GATEWAY_CONTRACT_ADDRESS --version=$RELAYER_IBC_VERSION
         fi
 
-        
-        
-        
+
+
+
         echo "$chain : pushing relayer docker so it is ready to be deployed"
         docker push $RELAYER_DOCKER_IMAGE:$CHAIN_ID-$NOIS_PROXY_CONTRACT_ADDRESS
         cd ../
     fi
-    
+
 done
 
 
