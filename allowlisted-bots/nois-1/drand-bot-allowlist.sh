@@ -64,4 +64,5 @@ allowlist_addresses=(
 "nois183zpsxgc0v5fyadg2pxlz5pr0dn64w30uu549s" #Robsberry#4903
 "nois12qvnsdlnq95j2dcwc9vk77etezfsk3awgvar60" #RuthWright#2752
 "nois10gzkvkj5q23q5gpk47kftwjvxqhaerxfh2984s" #thanhbinhpc2007#7611
+"nois1ewsargrw5jfywzplpj6tj8r7fmsscn8ydqnfye" #itrocket
 )
