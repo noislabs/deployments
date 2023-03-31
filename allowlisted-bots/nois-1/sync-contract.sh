@@ -8,9 +8,9 @@ noisd tx wasm execute $NOIS_DRAND_CONTRACT \
 '{"update_allowlist_bots": {
     "add": ["'$(echo ${allowlist_addresses[@]} \
         | tr -d '"' \
-        | sed 's/ /","/g')'"],"remove": ['$(echo ${remove_addresses[@]} \
+        | sed 's/ /","/g')'"],"remove": ["'$(echo ${remove_addresses[@]} \
         | tr -d '"' \
-        | sed 's/ /","/g')']}}' \
+        | sed 's/ /","/g')'"]}}' \
 --from deployment-key \
 --chain-id nois-1 \
 --gas=auto \

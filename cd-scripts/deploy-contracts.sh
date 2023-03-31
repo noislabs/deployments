@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 #PREREQS
 # 0 You need Install yq and fetch
@@ -33,8 +33,8 @@ else
 fi
 
 chains_list=($(yq -r '.chains[].name' config.yaml))
-ignore=( "euphoria-2" "elgafar-1" "juno-1"  "nois-1")
-#ignore=( "juno-1" "uni-6")
+ignore=(  "elgafar-1" "juno-1"  "nois-1")
+#ignore=( "juno-1" "uni-6" "euphoria-2")
 
 
 for chain in "${chains_list[@]}"
