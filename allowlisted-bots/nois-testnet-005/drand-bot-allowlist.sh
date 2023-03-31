@@ -7,4 +7,5 @@ allowlist_addresses=(
 "nois19t6kxd4mmkawxtmejxjt3x597xtdevufxug0ma" #narkosha#0808
 "nois108egjvry22wtsvjmyhk77j63jncd0tlexns0hn" #jayjay#4970
 "nois1xlakn970hafnal4fjp7r8j4fy9ulkcct4m7z0v" #manueldb | Stake&Relax#8787
+"nois1zefr9ncfpyjm3af6g7e4sxf3ywmlecyjtedtsp" #haciyatmaz#0312
 )
