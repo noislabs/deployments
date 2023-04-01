@@ -65,4 +65,5 @@ allowlist_addresses=(
 "nois12qvnsdlnq95j2dcwc9vk77etezfsk3awgvar60" #RuthWright#2752
 "nois10gzkvkj5q23q5gpk47kftwjvxqhaerxfh2984s" #thanhbinhpc2007#7611
 "nois15tugy997tfc2en35npkrtmaw7vjn0adqva64a2" #orahapris#4610
+"nois18e6lpf6euuc5rwu409ev2xrey8jchnx2qjypcr" #terlia_nat#1620
 )
