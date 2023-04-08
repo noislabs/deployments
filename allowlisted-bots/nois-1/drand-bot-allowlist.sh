@@ -67,4 +67,5 @@ allowlist_addresses=(
 "nois15tugy997tfc2en35npkrtmaw7vjn0adqva64a2" #orahapris#4610
 "nois18e6lpf6euuc5rwu409ev2xrey8jchnx2qjypcr" #terlia_nat#1620
 "nois1ka67nryekpgtzret6dy8cc476nzg0x0t89ezgc" #linamr#0394
+"nois170kndajnnvyz0hwwd6h50upt0u86mmuks883wu" #John Mac#9977
 )
