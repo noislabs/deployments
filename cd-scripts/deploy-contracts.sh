@@ -22,7 +22,7 @@ TEMPLATE_MIN_ROUND=$((TEMPLATE_MIN_ROUND + 28800)) #1 day
 
 SCRIPT_DIR="cd-scripts"
 KEYRING_KEY_NAME="deployment-key"
-INSTANTIATION_SALT=01
+INSTANTIATION_SALT=11
 
 cd $SCRIPT_DIR
 
@@ -33,7 +33,7 @@ else
 fi
 
 chains_list=($(yq -r '.chains[].name' config.yaml))
-ignore=(  "elgafar-1" "juno-1"  "nois-1")
+ignore=(  "elgafar-1" "juno-1"  "nois-1" "euphoria-2")
 #ignore=( "juno-1" "uni-6" "euphoria-2")
 
 
@@ -98,7 +98,7 @@ do
 
           echo "$chain - $contract : storing contract"
           sleep 2
-          CODE_ID=$($BINARY_NAME tx wasm store ../artifacts/$GIT_CONTRACTS_ASSET.wasm --instantiate-anyof-addresses $DEPLOYMENT_KEY_BECH_ADDR --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y |yq -r ".logs[0].events[1].attributes[1].value") #for wasmd 0.29.0-rc2 and maybe above, change attributes[0] --> attributes[1]
+          CODE_ID=$($BINARY_NAME tx wasm store ../artifacts/$GIT_CONTRACTS_ASSET.wasm --instantiate-anyof-addresses $DEPLOYMENT_KEY_BECH_ADDR --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y |yq -r '.logs[0].events[] | select(.type == "cosmwasm.wasm.v1.EventCodeStored") | .attributes[] | select(.key == "code_id") | .value' | sed 's/"//g') #for wasmd 0.29.0-rc2 and maybe above, change attributes[0] --> attributes[1]
           sleep 2
           yq -i '(.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").code_id) = "'"$CODE_ID"'"' config.yaml
           # skip CODE_ID variable is null
@@ -113,7 +113,7 @@ do
 
           echo "$chain - $contract : Instantiating contract"
           sleep 2
-          CONTRACT_ADDRESS=$($BINARY_NAME tx wasm instantiate2 $CODE_ID $CONTRACT_INSTATIATION_MSG $INSTANTIATION_SALT   --label=$contract --admin $($BINARY_NAME keys show $KEYRING_KEY_NAME -a )  --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL  -y |yq -r '.logs[0].events[0].attributes[0].value' )
+          CONTRACT_ADDRESS=$($BINARY_NAME tx wasm instantiate2 $CODE_ID $CONTRACT_INSTATIATION_MSG $INSTANTIATION_SALT   --label=$contract --admin $($BINARY_NAME keys show $KEYRING_KEY_NAME -a )  --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL  -y |yq -r '.logs[0].events[] | select(.type == "cosmwasm.wasm.v1.EventContractInstantiated") | .attributes[] | select(.key == "contract_address") | .value' | tr -d '"' )
           yq -i '(.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").address) = "'"$CONTRACT_ADDRESS"'"' config.yaml
           echo "$chain - $contract : CONTRACT_ADDRESS: $CONTRACT_ADDRESS"
 
