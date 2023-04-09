@@ -9,4 +9,5 @@ allowlist_addresses=(
 "nois1xlakn970hafnal4fjp7r8j4fy9ulkcct4m7z0v" #manueldb | Stake&Relax#8787
 "nois1zefr9ncfpyjm3af6g7e4sxf3ywmlecyjtedtsp" #haciyatmaz#0312
 "nois1e5lfc5jm3fal0hv4ra3evnq6v96ff2wk6tqsuy" #Mon | cumulo.pro#7662
+"nois1kya2stsgw7ffcjpgfx0p49c9ncp7hxjaq4derh" #NakoTurk#5452
 )
