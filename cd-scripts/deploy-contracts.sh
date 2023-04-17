@@ -22,7 +22,7 @@ TEMPLATE_MIN_ROUND=$((TEMPLATE_MIN_ROUND + 28800)) #1 day
 
 SCRIPT_DIR="cd-scripts"
 KEYRING_KEY_NAME="deployment-key"
-INSTANTIATION_SALT=11
+INSTANTIATION_SALT=6f
 
 cd $SCRIPT_DIR
 
@@ -33,8 +33,8 @@ else
 fi
 
 chains_list=($(yq -r '.chains[].name' config.yaml))
-ignore=(  "elgafar-1" "juno-1"  "nois-1" "euphoria-2")
-#ignore=( "juno-1" "uni-6" "euphoria-2")
+ignore=(  "elgafar-1" "juno-1"  "nois-1" "euphoria-2" "uni-6" )
+#ignore=( "juno-1" "uni-6" "euphoria-2" "injective-888")
 
 
 for chain in "${chains_list[@]}"
@@ -98,7 +98,13 @@ do
 
           echo "$chain - $contract : storing contract"
           sleep 2
-          CODE_ID=$($BINARY_NAME tx wasm store ../artifacts/$GIT_CONTRACTS_ASSET.wasm --instantiate-anyof-addresses $DEPLOYMENT_KEY_BECH_ADDR --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y |yq -r '.logs[0].events[] | select(.type == "cosmwasm.wasm.v1.EventCodeStored") | .attributes[] | select(.key == "code_id") | .value' | sed 's/"//g') #for wasmd 0.29.0-rc2 and maybe above, change attributes[0] --> attributes[1]
+          #For injective
+          #CODE_ID=$($BINARY_NAME tx wasm store ../artifacts/$GIT_CONTRACTS_ASSET.wasm --instantiate-anyof-addresses $DEPLOYMENT_KEY_BECH_ADDR --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y |yq -r '.logs[0].events[] | select(.type == "cosmwasm.wasm.v1.EventCodeStored") | .attributes[] | select(.key == "code_id") | .value' | sed 's/"//g')
+          if [ "$contract" = "nois-payment" ]  ; then
+              CODE_ID=$($BINARY_NAME tx wasm store ../artifacts/$GIT_CONTRACTS_ASSET.wasm                                                         --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y |yq -r '.logs[0].events[] | select(.type == "store_code") | .attributes[] | select(.key == "code_id") | .value' | sed 's/"//g')
+          else
+              CODE_ID=$($BINARY_NAME tx wasm store ../artifacts/$GIT_CONTRACTS_ASSET.wasm --instantiate-anyof-addresses $DEPLOYMENT_KEY_BECH_ADDR --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y |yq -r '.logs[0].events[] | select(.type == "store_code") | .attributes[] | select(.key == "code_id") | .value' | sed 's/"//g')
+          fi
           sleep 2
           yq -i '(.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").code_id) = "'"$CODE_ID"'"' config.yaml
           # skip CODE_ID variable is null
@@ -112,8 +118,11 @@ do
           fi
 
           echo "$chain - $contract : Instantiating contract"
-          sleep 2
-          CONTRACT_ADDRESS=$($BINARY_NAME tx wasm instantiate2 $CODE_ID $CONTRACT_INSTATIATION_MSG $INSTANTIATION_SALT   --label=$contract --admin $($BINARY_NAME keys show $KEYRING_KEY_NAME -a )  --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL  -y |yq -r '.logs[0].events[] | select(.type == "cosmwasm.wasm.v1.EventContractInstantiated") | .attributes[] | select(.key == "contract_address") | .value' | tr -d '"' )
+          sleep 6
+          #For injective
+          #CONTRACT_ADDRESS=$($BINARY_NAME tx wasm instantiate2 $CODE_ID $CONTRACT_INSTATIATION_MSG $INSTANTIATION_SALT   --label=$contract --admin $($BINARY_NAME keys show $KEYRING_KEY_NAME -a )  --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL  -y |yq -r '.logs[0].events[] | select(.type == "cosmwasm.wasm.v1.EventContractInstantiated") | .attributes[] | select(.key == "contract_address") | .value' | tr -d '"' )
+          #For juno and nois
+          CONTRACT_ADDRESS=$($BINARY_NAME tx wasm instantiate2 $CODE_ID $CONTRACT_INSTATIATION_MSG $INSTANTIATION_SALT   --label=$contract --admin $($BINARY_NAME keys show $KEYRING_KEY_NAME -a )  --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL  -y |yq -r '.logs[0].events[] | select(.type == "instantiate")|.attributes[] | select(.key == "_contract_address") | .value'  )
           yq -i '(.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").address) = "'"$CONTRACT_ADDRESS"'"' config.yaml
           echo "$chain - $contract : CONTRACT_ADDRESS: $CONTRACT_ADDRESS"
 
@@ -194,8 +203,8 @@ do
         then
             echo "$chain : channel already exists. skipping channel creation"
         else
-           echo "$chain : creating IBC channel"
-           docker run  -e RELAYER_MNEMONIC="$RELAYER_MNEMONIC" $RELAYER_DOCKER_IMAGE:$CHAIN_ID-$NOIS_PROXY_CONTRACT_ADDRESS ibc-setup channel --src-connection=$RELAYER_IBC_SRC_CONNECTION --dest-connection=$RELAYER_IBC_DEST_CONNECTION --src-port=wasm.$NOIS_PROXY_CONTRACT_ADDRESS --dest-port=wasm.$NOIS_GATEWAY_CONTRACT_ADDRESS --version=$RELAYER_IBC_VERSION
+          echo "$chain : creating IBC channel"
+          docker run  -e RELAYER_MNEMONIC="$RELAYER_MNEMONIC" $RELAYER_DOCKER_IMAGE:$CHAIN_ID-$NOIS_PROXY_CONTRACT_ADDRESS ibc-setup channel --src-connection=$RELAYER_IBC_SRC_CONNECTION --dest-connection=$RELAYER_IBC_DEST_CONNECTION --src-port=wasm.$NOIS_PROXY_CONTRACT_ADDRESS --dest-port=wasm.$NOIS_GATEWAY_CONTRACT_ADDRESS --version=$RELAYER_IBC_VERSION
         fi
 
 
