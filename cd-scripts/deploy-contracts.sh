@@ -22,7 +22,8 @@ TEMPLATE_MIN_ROUND=$((TEMPLATE_MIN_ROUND + 28800)) #1 day
 
 SCRIPT_DIR="cd-scripts"
 KEYRING_KEY_NAME="deployment-key"
-INSTANTIATION_SALT=6f
+
+INSTANTIATION_SALT=01
 
 cd $SCRIPT_DIR
 
@@ -33,8 +34,9 @@ else
 fi
 
 chains_list=($(yq -r '.chains[].name' config.yaml))
-ignore=(  "elgafar-1" "juno-1"  "nois-1" "euphoria-2" "uni-6" )
-#ignore=( "juno-1" "uni-6" "euphoria-2" "injective-888")
+
+ignore=(  "elgafar-1" "euphoria-2" "injective-888" "nois-testnet-005" "uni-6" "nois-1" )
+#deploy=( "juno-1" )
 
 
 for chain in "${chains_list[@]}"
@@ -82,8 +84,8 @@ do
         CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_NOIS_PROXY#$NOIS_PROXY_CONTRACT_ADDRESS#" )
         CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_MIN_ROUND#$TEMPLATE_MIN_ROUND#" )
         CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_DENOM#$DENOM#" )
-        TEMPLATE_WITHDRAWAL_ADDRESS=$DEPLOYMENT_KEY_BECH_ADDR
-        CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_WITHDRAWAL_ADDRESS#$TEMPLATE_WITHDRAWAL_ADDRESS#" )
+        TEMPLATE_MANAGER_ADDRESS=$DEPLOYMENT_KEY_BECH_ADDR
+        CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_MANAGER_ADDRESS#$TEMPLATE_MANAGER_ADDRESS#" )
         CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_SINK_ADDR#$NOIS_SINK_CONTRACT_ADDRESS#" )
         CONTRACT_INSTATIATION_MSG=$(echo $CONTRACT_INSTATIATION_MSG | sed "s#TEMPLATE_PAYMENT_CODE_ID#$NOIS_PAYMENT_CODE_ID#" )
 
@@ -97,7 +99,7 @@ do
           echo "$chain - $contract : deployment of $contract in $chain"
 
           echo "$chain - $contract : storing contract"
-          sleep 2
+          sleep 6
           #For injective
           #CODE_ID=$($BINARY_NAME tx wasm store ../artifacts/$GIT_CONTRACTS_ASSET.wasm --instantiate-anyof-addresses $DEPLOYMENT_KEY_BECH_ADDR --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y |yq -r '.logs[0].events[] | select(.type == "cosmwasm.wasm.v1.EventCodeStored") | .attributes[] | select(.key == "code_id") | .value' | sed 's/"//g')
           if [ "$contract" = "nois-payment" ]  ; then
@@ -105,7 +107,7 @@ do
           else
               CODE_ID=$($BINARY_NAME tx wasm store ../artifacts/$GIT_CONTRACTS_ASSET.wasm --instantiate-anyof-addresses $DEPLOYMENT_KEY_BECH_ADDR --from $KEYRING_KEY_NAME --chain-id $CHAIN_ID   --gas=auto --gas-adjustment 1.2  --gas-prices=$GAS_PRICES$DENOM --broadcast-mode=block --node=$NODE_URL -y |yq -r '.logs[0].events[] | select(.type == "store_code") | .attributes[] | select(.key == "code_id") | .value' | sed 's/"//g')
           fi
-          sleep 2
+          sleep 6
           yq -i '(.chains[]| select(.name=="'"$chain"'").wasm.contracts[]| select(.name=="'"$contract"'").code_id) = "'"$CODE_ID"'"' config.yaml
           # skip CODE_ID variable is null
           if [ "$CODE_ID" = "null" ]  ; then
