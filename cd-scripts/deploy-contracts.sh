@@ -201,13 +201,13 @@ do
         echo "$chain : check if channel exists"
         channel_exists=true
         $BINARY_NAME query ibc channel channels  --node=$NODE_URL   --limit=100000 |yq -r '.channels[]|select(.version=="'"$RELAYER_IBC_VERSION"'")| select(.port_id=="'"wasm.$NOIS_PROXY_CONTRACT_ADDRESS"'").channel_id |length' -e || channel_exists=false
-        if [ "$channel_exists" = true ];
-        then
-            echo "$chain : channel already exists. skipping channel creation"
-        else
+        #if [ "$channel_exists" = true ];
+        #then
+        #    echo "$chain : channel already exists. skipping channel creation"
+        #else
           echo "$chain : creating IBC channel"
           docker run  -e RELAYER_MNEMONIC="$RELAYER_MNEMONIC" $RELAYER_DOCKER_IMAGE:$CHAIN_ID-$NOIS_PROXY_CONTRACT_ADDRESS ibc-setup channel --src-connection=$RELAYER_IBC_SRC_CONNECTION --dest-connection=$RELAYER_IBC_DEST_CONNECTION --src-port=wasm.$NOIS_PROXY_CONTRACT_ADDRESS --dest-port=wasm.$NOIS_GATEWAY_CONTRACT_ADDRESS --version=$RELAYER_IBC_VERSION
-        fi
+        #fi
 
 
 
