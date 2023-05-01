@@ -8,4 +8,5 @@ allowlist_addresses=(
 "nois108egjvry22wtsvjmyhk77j63jncd0tlexns0hn" #jayjay#4970
 "nois1xlakn970hafnal4fjp7r8j4fy9ulkcct4m7z0v" #manueldb | Stake&Relax#8787
 "nois1zefr9ncfpyjm3af6g7e4sxf3ywmlecyjtedtsp" #haciyatmaz#0312
+"nois1x35htgd90mugjjk6pd2uq47wd2tjhsw2c06mse" #Maxereum#0414
 )
