@@ -35,8 +35,8 @@ fi
 
 chains_list=($(yq -r '.chains[].name' config.yaml))
 
-ignore=(  "elgafar-1" "euphoria-2" "injective-888" "nois-testnet-005" "uni-6" "nois-1" )
-#deploy=( "juno-1" )
+ignore=(  "elgafar-1" "euphoria-2" "injective-888" "nois-testnet-005"  "nois-1" "juno-1" )
+#deploy=( "uni-6")
 
 
 for chain in "${chains_list[@]}"
