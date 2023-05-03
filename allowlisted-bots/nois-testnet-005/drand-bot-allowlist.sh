@@ -11,4 +11,5 @@ allowlist_addresses=(
 "nois1e5lfc5jm3fal0hv4ra3evnq6v96ff2wk6tqsuy" #Mon | cumulo.pro#7662
 "nois1kya2stsgw7ffcjpgfx0p49c9ncp7hxjaq4derh" #NakoTurk#5452
 "nois1x35htgd90mugjjk6pd2uq47wd2tjhsw2c06mse" #Maxereum#0414
+"nois1s7ll723zu6j0utf33zsdwlzl26j4mnhsexwlkg" #AlxVoy
 )
