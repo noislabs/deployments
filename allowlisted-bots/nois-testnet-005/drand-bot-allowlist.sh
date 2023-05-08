@@ -12,4 +12,5 @@ allowlist_addresses=(
 "nois1kya2stsgw7ffcjpgfx0p49c9ncp7hxjaq4derh" #NakoTurk#5452
 "nois1x35htgd90mugjjk6pd2uq47wd2tjhsw2c06mse" #Maxereum#0414
 "nois1s7ll723zu6j0utf33zsdwlzl26j4mnhsexwlkg" #AlxVoy
+"nois1z0fyvylcz3x8yqanu2th2f9s8vljf83ph35pmt" #Alan | NodeStake.top#2237
 )
