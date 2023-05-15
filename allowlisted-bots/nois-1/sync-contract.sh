@@ -17,4 +17,4 @@ noisd tx wasm execute $NOIS_DRAND_CONTRACT \
 --gas-adjustment 1.3 \
 --gas-prices=0.05unois \
 --broadcast-mode=block \
---node=https://nois-mainnet-rpc.bccnodes.com:443
+--node=https://rpc.cosmos.directory:443/nois

@@ -68,4 +68,5 @@ allowlist_addresses=(
 "nois18e6lpf6euuc5rwu409ev2xrey8jchnx2qjypcr" #terlia_nat#1620
 "nois1ka67nryekpgtzret6dy8cc476nzg0x0t89ezgc" #linamr#0394
 "nois195mm9y35sekrjk73anw2az9lv9xs5mztt7jvs0" #jabbey#2389
+"nois1z0fyvylcz3x8yqanu2th2f9s8vljf83ph35pmt" #Alan | NodeStake.top#2237
 )

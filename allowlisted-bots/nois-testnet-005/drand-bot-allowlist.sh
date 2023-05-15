@@ -13,4 +13,8 @@ allowlist_addresses=(
 "nois1x35htgd90mugjjk6pd2uq47wd2tjhsw2c06mse" #Maxereum#0414
 "nois1s7ll723zu6j0utf33zsdwlzl26j4mnhsexwlkg" #AlxVoy
 "nois17ee7c6xkd3c52n7mgfwdgeqy39lrcml75rky2a" #cwt#3491
+"nois17y5tmzg2deztahret7pjgap6ssrdr6p0634qrk" #SAKURA#0129
+"nois1w7sqmnu5ayav9mryqnklzjj6wmyulul35jj0aw" #rjsimp#1081
+"nois1z0fyvylcz3x8yqanu2th2f9s8vljf83ph35pmt" #Alan | NodeStake.top#2237
+"nois1z6jj5lrvtz3qsh80a4fm9rlzxeyw4z97j408hx" #kjnodes#8455
 )
