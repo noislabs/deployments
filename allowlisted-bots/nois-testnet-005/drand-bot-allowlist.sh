@@ -17,4 +17,5 @@ allowlist_addresses=(
 "nois1w7sqmnu5ayav9mryqnklzjj6wmyulul35jj0aw" #rjsimp#1081
 "nois1z0fyvylcz3x8yqanu2th2f9s8vljf83ph35pmt" #Alan | NodeStake.top#2237
 "nois1z6jj5lrvtz3qsh80a4fm9rlzxeyw4z97j408hx" #kjnodes#8455
+"nois1vyxr8zaapmj8zz9pm262nuyz27987up0ww7dan" #! Jango | L0vd.com#1710
 )
