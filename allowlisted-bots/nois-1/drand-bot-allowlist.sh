@@ -40,7 +40,7 @@ allowlist_addresses=(
 "nois1a2chy0mavx80406z9tncyjcqq4v2zwzhjrwerj" #AndreasVorobey#3014
 "nois1vtzmulynjprfgure67k6j9dav5m25w7kw589s9" #AlexeyM#5409
 "nois1cnkyzyr2yywgflx53ay4r90fxgu8kx6s2ug039" #arda | Validator.run#8670
-"nois10hcnj06d32khtknfgxkcs05amnw4wrl8w23c8m" #NakoTurk#5452
+"nois1kcyyykjflm5r60f2agszwenu6x79dejpg2t68k" #NakoTurk#5452
 "nois1g5h25dmug042jc93p6rk00ssnr0ql3kqn8kvlc" #tsigor#5666
 "nois10rwh09k3y7xdxq54mhnan0gqpjw4ysplx6j76j" #HamzaK#5652
 "nois1522y2vxy6kymt6m8zxvum8x44fy9suhyav2m4q" #AlexHuk#8647
@@ -68,4 +68,7 @@ allowlist_addresses=(
 "nois18e6lpf6euuc5rwu409ev2xrey8jchnx2qjypcr" #terlia_nat#1620
 "nois1ka67nryekpgtzret6dy8cc476nzg0x0t89ezgc" #linamr#0394
 "nois1x35htgd90mugjjk6pd2uq47wd2tjhsw2c06mse" #Maxereum#0414
+"nois170kndajnnvyz0hwwd6h50upt0u86mmuks883wu" #John Mac#9977
+"nois195mm9y35sekrjk73anw2az9lv9xs5mztt7jvs0" #jabbey#2389
+"nois1z0fyvylcz3x8yqanu2th2f9s8vljf83ph35pmt" #Alan | NodeStake.top#2237
 )
