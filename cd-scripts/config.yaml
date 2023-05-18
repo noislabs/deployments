@@ -115,27 +115,20 @@ chains:
       - "https://rpc.euphoria.aura.network:443"
     wasm:
       contracts:
-        - address:
-          code_id: "720"
+        - address: aura1z09t9njzlm4cjmdt9jklvqddzfh39zhzkd50vk5fztpm8w2xrf6qpmncs2
+          code_id: "802"
           git_asset_name: nois_proxy
           instantiation_msg: '{"prices":[{"denom":"TEMPLATE_DENOM","amount":"100"}],"withdrawal_address":"TEMPLATE_WITHDRAWAL_ADDRESS","callback_gas_limit":500000,"test_mode":false,"mode":{"ibc_pay":{"unois_denom":{"ics20_channel":"channel-175","denom":"ibc/1D9E14A1F00613ED39E4B8A8763A20C9BE5B5EA0198F2FE47EAE43CD91A0137B"}}}}'
           name: nois-proxy
           url: "https://github.com/noislabs/nois-contracts"
           version: v0.11.0
-        - address:
-          code_id: "721"
-          git_asset_name: nois_demo
+        - address: aura1863kfdczyj8jas6aesmy0nmuc6xj8lszchm45u2dj2ve4j5ha40qzgpe38
+          code_id: "808"
+          git_asset_name: nois_monitoring
           instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
-          name: nois-demo
+          name: nois-monitoring
           url: "https://github.com/noislabs/nois-contracts"
-          version: v0.11.0
-        - address:
-          code_id: "722"
-          git_asset_name: double_dice_roll
-          instantiation_msg: '{"nois_proxy":"TEMPLATE_NOIS_PROXY"}'
-          name: double-dice-roll
-          url: "https://github.com/noislabs/nois-dapp-examples"
-          version: v0.5.1
+          version: v0.13.0
   - binary_name: starsd
     chain_id: elgafar-1
     denom: ustars

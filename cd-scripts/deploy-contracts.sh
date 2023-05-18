@@ -23,7 +23,7 @@ TEMPLATE_MIN_ROUND=$((TEMPLATE_MIN_ROUND + 28800)) #1 day
 SCRIPT_DIR="cd-scripts"
 KEYRING_KEY_NAME="deployment-key"
 
-INSTANTIATION_SALT=01
+INSTANTIATION_SALT=02
 
 cd $SCRIPT_DIR
 
@@ -35,8 +35,8 @@ fi
 
 chains_list=($(yq -r '.chains[].name' config.yaml))
 
-ignore=(  "elgafar-1" "euphoria-2" "injective-888" "nois-testnet-005"  "nois-1" "juno-1" )
-#deploy=( "uni-6")
+ignore=( "uni-6" "elgafar-1"  "injective-888" "nois-testnet-005"  "nois-1" "juno-1" )
+#deploy=( "euphoria-2" )
 
 
 for chain in "${chains_list[@]}"
