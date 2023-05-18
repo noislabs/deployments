@@ -1,4 +1,5 @@
 allowlist_addresses=(
+"nois15lwgz0jqua66yq42srlyyyj0fv7s6ny99v3s7x" #AlexHuk#8647
 "nois1w457lpw484mrtds045jxg737fmznsv3aadpwrm" #ryssroad#7010
 "nois1ewsargrw5jfywzplpj6tj8r7fmsscn8ydqnfye" #SEM#4095
 "nois1kqpvdzlrmnmw78fyl34twlsx3jy2yptnfcatnc" #Kolot#5637
