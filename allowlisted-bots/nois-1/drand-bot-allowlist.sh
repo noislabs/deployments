@@ -1,4 +1,5 @@
 allowlist_addresses=(
+"nois120w0tva7xpaxrmg97l2sugut0kd085we488mrt" #ryssroad#7010
 "nois1dp4fnnagxdk46vh9nvlg83jml45d4kpmzcxqjl" #alkadeta#2699
 "nois1rzf9y9cfudr0n46vt32kd46x8lwem05xxxy646" #BccNodes#3882
 "nois1sc4rwm6atdeywv6fjj9zn2sj3xfzthvn07ee57" #chillyvee#1883
