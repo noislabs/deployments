@@ -25,7 +25,7 @@ allowlist_addresses=(
 "nois14qekdkj2nmmwea4ufg9n002a3pud23y852apag" #schultzie | Lavender.Five Nodes#3231
 "nois1lagqlmjykjthpp30ft7w7fp9rcjx0f76zkt3gg" #mahof#6504
 "nois12090t6r7kx87hxdh3z3yqu0vys96h62sp69txe" #mcb2001#6827
-"nois1lserx5uvlreglp0qzehcxewxgq47fqpnhgdt8g" #narkosha#0808
+"nois1nl6pnh3vy6pptxauhtk5wuv9625hxtdv6s7yht" #narkosha#0808
 "nois1u3284r37jq0tyd4rynz35k0kk23q3hvynr8c5c" #! PPNV Service !#0083
 "nois1cdqhp3ecnyzwjqp4pshxl8a6xy6vl2trwkwgyr" #rjsimp#1081
 "nois1sj2zl4d2h0jzwsvs5enfrjwk0uhkcz8ew9w3yv" #SAKURA#0129
