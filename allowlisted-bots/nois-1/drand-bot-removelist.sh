@@ -1,3 +1,3 @@
 remove_addresses=(
-"nois1nl6pnh3vy6pptxauhtk5wuv9625hxtdv6s7yht" #narkosha#0808
+"nois1lserx5uvlreglp0qzehcxewxgq47fqpnhgdt8g" #narkosha#0808
 )
