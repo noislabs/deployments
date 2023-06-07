@@ -20,4 +20,5 @@ allowlist_addresses=(
 "nois1z6jj5lrvtz3qsh80a4fm9rlzxeyw4z97j408hx" #kjnodes#8455
 "nois1vyxr8zaapmj8zz9pm262nuyz27987up0ww7dan" #! Jango | L0vd.com#1710
 "nois1tczxdxdz073qg5uk0rgf6dy6gupm2mq233c36g" #alterkahn#1033
+"nois16f7tywvneyepllh0azxy3hhfla7rdknd2ee9a7" #vbloher | Nodejumper#2545
 )
