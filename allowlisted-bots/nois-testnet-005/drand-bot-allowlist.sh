@@ -21,4 +21,5 @@ allowlist_addresses=(
 "nois1vyxr8zaapmj8zz9pm262nuyz27987up0ww7dan" #! Jango | L0vd.com#1710
 "nois1tczxdxdz073qg5uk0rgf6dy6gupm2mq233c36g" #alterkahn#1033
 "nois16f7tywvneyepllh0azxy3hhfla7rdknd2ee9a7" #vbloher | Nodejumper#2545
+"nois1ernsplg4t56rxd48mq7x93u8ztfpszh0v80h52" #webmaster128
 )
