@@ -22,4 +22,5 @@ allowlist_addresses=(
 "nois1tczxdxdz073qg5uk0rgf6dy6gupm2mq233c36g" #alterkahn#1033
 "nois16f7tywvneyepllh0azxy3hhfla7rdknd2ee9a7" #vbloher | Nodejumper#2545
 "nois1ernsplg4t56rxd48mq7x93u8ztfpszh0v80h52" #webmaster128
+"nois1cn62y808yl200ygjdvus6e9yz36sp2jm9pdnld" #superbourguignon
 )
