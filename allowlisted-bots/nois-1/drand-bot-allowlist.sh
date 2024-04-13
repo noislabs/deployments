@@ -74,4 +74,5 @@ allowlist_addresses=(
 "nois1z0fyvylcz3x8yqanu2th2f9s8vljf83ph35pmt" #Alan | NodeStake.top#2237
 "nois1072grcfqsk3vdgnz8zq3jmy4jsd0xezk2gq58y" #alterkahn
 "nois1cn62y808yl200ygjdvus6e9yz36sp2jm9pdnld" #superbourguignon.
+"nois1lx5s5purqu6kzqk5naejznsyaqml5gr4mzgqgh" #webmaster128
 )
