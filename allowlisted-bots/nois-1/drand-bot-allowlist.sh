@@ -74,5 +74,7 @@ allowlist_addresses=(
 "nois1z0fyvylcz3x8yqanu2th2f9s8vljf83ph35pmt" #Alan | NodeStake.top#2237
 "nois1072grcfqsk3vdgnz8zq3jmy4jsd0xezk2gq58y" #alterkahn
 "nois1cn62y808yl200ygjdvus6e9yz36sp2jm9pdnld" #superbourguignon.
-"nois1lx5s5purqu6kzqk5naejznsyaqml5gr4mzgqgh" #webmaster128
+"nois1lx5s5purqu6kzqk5naejznsyaqml5gr4mzgqgh" #webmaster128_testing_only
+"nois1pchcy69p2dnzh66vgvku4tfhf5np3lg97wdwdv" #katarina_Group_A_testing_only
+"nois1a76y28a6jxgjkrt6aw93tkpwdj6cw83aluwt5e" #katarina_Group_B_testing_only
 )
